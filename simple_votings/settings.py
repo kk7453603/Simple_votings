@@ -19,8 +19,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+
+
+# Эта настройка отключена в шаблоне, чтобы все проекты обязательно указывали свой индивидуальный SECRET_KEY.
+# Генерация делается в консоли Python при помощи команд:
+#   from django.core.management.utils import get_random_secret_key
+#   get_random_secret_key()
+# Далее полученное значение подставляется в соответствующую переменную
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(^bvf47lc+06+v+rul45ch(u!a1(&*p16a$vk#okso%thze6$z'
+# SECRET_KEY = 'Insert secret key here and uncomment this variable'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -125,3 +133,8 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+# Проверка тех, кто ленится указать корректный SECRET_KEY
+if SECRET_KEY == 'Insert secret key here and uncomment this variable':
+    raise RuntimeError('Сначала укажите SECRET_KEY. Подробности - в settings.py')
