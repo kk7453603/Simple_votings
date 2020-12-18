@@ -134,6 +134,7 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+AUTH_USER_MODEL = 'main.User'
 
 # Проверка тех, кто ленится указать корректный SECRET_KEY
 if SECRET_KEY == 'Insert secret key here and uncomment this variable':
