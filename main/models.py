@@ -4,7 +4,13 @@ from django.db import models
 
 class User(AbstractUser):
     status = models.CharField(max_length=255)
-
+    USERNAME_FIELD = models.CharField(max_length=30, unique=False, default="anonim")
+    password = models.TextField()
+    email = models.EmailField()
+    avatar = models.FileField(default="none")
+    is_superuser = models.BooleanField()
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
 
 class UserSettings(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.CASCADE)
@@ -12,8 +18,8 @@ class UserSettings(models.Model):
 
 class Voting(models.Model):
     author = models.IntegerField()
-    name = models.CharField()
-    description = models.CharField()
+    name = models.TextField()
+    description = models.TextField()
     type = models.IntegerField()
     published = models.DateTimeField()
     finished = models.DateTimeField()
@@ -22,7 +28,7 @@ class Voting(models.Model):
 
 class VoteVariant(models.Model):
     voting = models.IntegerField()
-    description = models.CharField()
+    description = models.TextField()
 
 
 class VoteFact(models.Model):
@@ -34,12 +40,9 @@ class VoteFact(models.Model):
 class Complaint(models.Model):
     author = models.IntegerField()
     voting = models.IntegerField()
-    description = models.CharField()
+    description = models.TextField()
     status = models.IntegerField()
 
-
-class Products(models.Model):
+class FavouriteVoting(models.Model):
     author = models.IntegerField()
-    name = models.CharField()
-    status = models.CharField()
-    created_at = models.CharField()
+    voting = models.IntegerField()
