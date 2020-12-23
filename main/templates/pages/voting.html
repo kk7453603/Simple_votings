@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voting</title>
+</head>
+<body>
+  {% for info in voting %}
+    <h1>{{ info.name }}</h1>
+    <hr>
+    <p>ID автора опроса - {{ info.author }}</p>
+    <hr>
+    <p>{{ info.description }}</p>
+{% endfor %}
+</body>
+</html>
