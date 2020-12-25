@@ -7,10 +7,11 @@ class User(AbstractUser):
     USERNAME_FIELD = models.CharField(max_length=30, unique=False, default="anonim")
     password = models.TextField()
     email = models.EmailField()
-    avatar = models.FileField(default="none")
+    avatar = models.FileField(null=True, blank=True)
     is_superuser = models.BooleanField()
     is_staff = models.BooleanField()
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=True)
+
 
 class UserSettings(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.CASCADE)
