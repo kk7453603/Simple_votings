@@ -32,7 +32,7 @@ def time_page(request):
     return render(request, 'pages/time.html', context)
 
 def voting_page(request):
-    required_id = 1   # тут что нибудь умное придумаем
+    required_id = 2   # тут что нибудь умное придумаем
     context = {
         'voting' : Voting.objects.filter(id=required_id),
     }

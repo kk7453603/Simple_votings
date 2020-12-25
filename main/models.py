@@ -19,6 +19,7 @@ class UserSettings(models.Model):
 class Voting(models.Model):
     author = models.IntegerField()
     name = models.TextField()
+    author_name = models.ForeignKey(to=User, on_delete=models.CASCADE)
     description = models.TextField()
     type = models.IntegerField()
     published = models.DateTimeField()
