@@ -1,7 +1,6 @@
 import datetime
 
 from django.shortcuts import render
-
 from main.models import Voting
 
 
@@ -32,6 +31,7 @@ def time_page(request):
         'menu': get_menu_context()
     }
     return render(request, 'pages/time.html', context)
+
 
 def voting_page(request):
     required_id = 2   # тут что нибудь умное придумаем
