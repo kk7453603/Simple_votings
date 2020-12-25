@@ -44,6 +44,7 @@ class Complaint(models.Model):
     description = models.TextField()
     status = models.IntegerField()
 
+
 class FavouriteVoting(models.Model):
     author = models.IntegerField()
     voting = models.IntegerField()

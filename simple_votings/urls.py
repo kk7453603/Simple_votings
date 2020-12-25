@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index_page, name='index'),
     path('time/', views.time_page, name='time'),
+    path('votings/', views.voting_list_page, name='votings'),
     path(
         'login/',
         auth_views.LoginView.as_view(
