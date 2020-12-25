@@ -8,7 +8,7 @@
   {% for info in voting %}
     <h1>{{ info.name }}</h1>
     <hr>
-    <p>ID автора опроса - {{ info.author }}</p>
+    <p>Автор опроса - {{ info.author_name.username }} (ID {{ info.author }})</p>
     <hr>
     <p>{{ info.description }}</p>
 {% endfor %}
