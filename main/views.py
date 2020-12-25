@@ -2,11 +2,14 @@ import datetime
 
 from django.shortcuts import render
 
+from main.models import Voting
+
 
 def get_menu_context():
     return [
         {'url_name': 'index', 'name': 'Главная'},
         {'url_name': 'time', 'name': 'Текущее время'},
+        {'url_name': 'voting', 'name': 'Голосование'},
     ]
 
 
@@ -27,3 +30,10 @@ def time_page(request):
         'menu': get_menu_context()
     }
     return render(request, 'pages/time.html', context)
+
+def voting_page(request):
+    required_id = 1   # тут что нибудь умное придумаем
+    context = {
+        'voting' : Voting.objects.filter(id=required_id),
+    }
+    return render(request, 'pages/voting.html', context)
