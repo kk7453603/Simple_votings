@@ -8,8 +8,8 @@ class User(AbstractUser):
     password = models.TextField()
     email = models.EmailField()
     avatar = models.FileField(null=True, blank=True)
-    is_superuser = models.BooleanField()
-    is_staff = models.BooleanField()
+    is_superuser = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
 
