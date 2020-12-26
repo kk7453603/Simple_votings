@@ -2,7 +2,7 @@ import datetime
 
 from django.shortcuts import render
 from main.models import Voting
-
+from .forms import *
 
 def get_menu_context():
     return [
@@ -50,4 +50,14 @@ def voting_list_page(request):
 
 def voting_creation_page(request):
     context={}
+    user=request.user
+    if request.method == 'POST':
+        form=Addform(request.POST)
+        if form.is_valid():
+            #context['form']=form
+            pass
+        else:
+            #form=Addform()
+            #context['form'] = form
+            pass
     return render(request, 'pages/add_votings.html', context)
