@@ -47,3 +47,7 @@ def voting_list_page(request):
         'history' : Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+def voting_creation_page(request):
+    context={}
+    return render(request, 'pages/add_votings.html', context)

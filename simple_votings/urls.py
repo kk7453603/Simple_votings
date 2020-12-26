@@ -38,4 +38,5 @@ urlpatterns = [
     ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('voting/', views.voting_page, name='voting'),
+    path('/creating', views.voting_creation_page, name='create')
 ]
