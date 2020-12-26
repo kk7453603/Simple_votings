@@ -21,6 +21,9 @@ class Voting(models.Model):
     finished = models.DateTimeField()
     is_active = models.BooleanField()
 
+    class Meta:
+        ordering = ['-finished']
+
 
 class VoteVariant(models.Model):
     voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
