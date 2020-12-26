@@ -1,27 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Voting</title>
-</head>
-<body>
-<table border = '1px'>
-  <tr>
-    <td>username</td>
-    <td>name</td>
-    <td>description</td>
-  </tr>
-  {% for record in history %}
-  <tr>
-    <td>{{ record.author.username }}</td>
-    <td>{{ record.name }}</td>
-    <td>{{ record.description }}</td>
-  </tr>
-  {% endfor %}
+{% extends 'base/base.html' %}
 
 
+{% block content %}
 
+<table class="table">
+    <tr>
+        <td>username</td>
+        <td>name</td>
+        <td>description</td>
+    </tr>
+
+    {% for record in history %}
+        <tr>
+            <td>{{ record.author.username }}</td>
+            <td>{{ record.name }}</td>
+            <td>{{ record.description }}</td>
+        </tr>
+    {% endfor %}
 </table>
 
-</body>
-</html>
+{% endblock %}
