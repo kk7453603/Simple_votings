@@ -1,26 +1,20 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 class User(AbstractUser):
     status = models.CharField(max_length=255)
-    USERNAME_FIELD = models.CharField(max_length=30, unique=False, default="anonim")
-    password = models.TextField()
-    email = models.EmailField()
-    avatar = models.FileField(null=True, blank=True)
-    is_superuser = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
 
 
 class UserSettings(models.Model):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+    user = models.OneToOneField(to=get_user_model(), on_delete=models.CASCADE)
+    avatar = models.FileField(null=True, blank=True)
 
 
 class Voting(models.Model):
-    author = models.IntegerField()
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     name = models.TextField()
-    author_name = models.ForeignKey(to=User, on_delete=models.CASCADE)
     description = models.TextField()
     type = models.IntegerField()
     published = models.DateTimeField()
@@ -29,23 +23,23 @@ class Voting(models.Model):
 
 
 class VoteVariant(models.Model):
-    voting = models.IntegerField()
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     description = models.TextField()
 
 
 class VoteFact(models.Model):
-    author = models.IntegerField()
-    variant = models.IntegerField()
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    variant = models.ForeignKey(to=VoteVariant, on_delete=models.CASCADE)
     created = models.DateTimeField()
 
 
 class Complaint(models.Model):
-    author = models.IntegerField()
-    voting = models.IntegerField()
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     description = models.TextField()
     status = models.IntegerField()
 
 
 class FavouriteVoting(models.Model):
-    author = models.IntegerField()
-    voting = models.IntegerField()
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
