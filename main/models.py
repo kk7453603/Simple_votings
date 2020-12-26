@@ -8,9 +8,9 @@ class User(AbstractUser):
     password = models.TextField()
     email = models.EmailField()
     avatar = models.FileField(default="none")
-    is_superuser = models.BooleanField()
-    is_staff = models.BooleanField()
-    is_active = models.BooleanField()
+    is_superuser = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
 class UserSettings(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.CASCADE)

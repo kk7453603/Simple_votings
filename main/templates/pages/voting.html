@@ -5,12 +5,16 @@
   <title>Voting</title>
 </head>
 <body>
-  {% for info in voting %}
-    <h1>{{ info.name }}</h1>
+    <h1>{{ name }}</h1>
     <hr>
-    <p>Автор опроса - {{ info.author_name.username }} (ID {{ info.author }})</p>
+    <p>Автор опроса - {{ author_name }} (ID {{ author }})</p>
     <hr>
-    <p>{{ info.description }}</p>
-{% endfor %}
+    <p>{{ description }}</p>
+    <form>
+      {% for vote_var in vote_variants %}
+        <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
+      {% endfor %}
+      <p><input type="submit" value="Выбрать"></p>
+    </form>
 </body>
 </html>
