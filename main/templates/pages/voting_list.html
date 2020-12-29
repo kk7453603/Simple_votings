@@ -1,22 +1,22 @@
 {% extends 'base/base.html' %}
-
-
 {% block content %}
-
-<table class="table">
-    <tr>
-        <td>username</td>
-        <td>name</td>
-        <td>description</td>
-    </tr>
-
-    {% for record in history %}
+    {% if request.user.is_authenticated %}
+      <table class="table">
         <tr>
-            <td>{{ record.author.username }}</td>
-            <td>{{ record.name }}</td>
-            <td>{{ record.description }}</td>
+          <td>username</td>
+          <td>name</td>
+          <td>description</td>
         </tr>
-    {% endfor %}
-</table>
 
+        {% for record in history %}
+        <tr>
+          <td>{{ record.author.username }}</td>
+          <td>{{ record.name }}</td>
+          <td>{{ record.description }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+        <p>Пожалуйста, войдите в систему</p>
+    {% endif %}
 {% endblock %}
