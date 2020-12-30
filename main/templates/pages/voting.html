@@ -12,9 +12,8 @@
     <p>{{ description }}</p>
     <form>
       {% for vote_var in vote_variants %}
-        <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
+        <span><button name="vote_var" type="submit" value={{vote_var.id}}>{{vote_var.description}}</button></span>
       {% endfor %}
-      <p><input type="submit" value="Выбрать"></p>
     </form>
 </body>
 </html>
