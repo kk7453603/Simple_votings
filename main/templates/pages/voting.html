@@ -2,15 +2,23 @@
 
 
 {% block content %}
-
-    <p>Автор опроса - {{ author_name }} (ID {{ author.id }})</p>
+    <p>{{voting.name}}</p>
+    <p>Автор опроса - {{ voting.author.username }} (ID {{ voting.author.id }})</p>
     <hr>
-    <p>{{ description }}</p>
-    <form>
-        {% for vote_var in vote_variants %}
-            <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
-        {% endfor %}
-        <p><input type="submit" value="Выбрать"></p>
+    <p>{{ voting.description }}</p>
+    <form method="post">
+      {% csrf_token %}
+      {% if voting.type == 0 %}
+          {% for vote_var in vote_variants %}
+              <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
+          {% endfor %}
+          <p><input type="submit" value="Выбрать"></p>
+      {% elif voting.type == 1 %}
+          {% for vote_var in vote_variants %}
+              <p><input name="vote_var" type="checkbox" value={{vote_var.id}}> {{vote_var.description}}</p>
+          {% endfor %}
+          <p><input type="submit" value="Выбрать"></p>
+      {% endif %}
     </form>
 
 {% endblock %}
