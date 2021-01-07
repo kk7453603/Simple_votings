@@ -9,5 +9,10 @@
   <textarea id="textosn"></textarea>
   <p><button type="submit">Создать</button></p>
 </form>
+  {% if status is 1 %}
+  <h3>Успешно добавлено</h3>
+  {% elif status is 0 %}
+  <h3>Ошибка заполнения формы</h3>
+  {% endif %}
 </div>
 {% endblock %}
