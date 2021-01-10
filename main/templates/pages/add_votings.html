@@ -3,10 +3,10 @@
 {% block content %}
 <div  class="row mt-3">
 <h1>Создание голосований</h1>
-<form method="post">
+<form method="POST" action="/creating/">
   {% csrf_token %}
-  <input type="text" id="zagolovok"></br>
-  <textarea id="textosn"></textarea>
+  <input type="text" id="header" name="header"></br>
+  <textarea id="text" name="text"></textarea>
   <p><button type="submit">Создать</button></p>
 </form>
   {% if status is 1 %}
