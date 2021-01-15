@@ -21,6 +21,7 @@
                         <a class="nav-link active" href="{% url 'logout' %}">Выйти</a>
                     {% else %}
                         <a class="nav-link active" href="{% url 'login' %}">Войти</a>
+                        <a class="nav-link active" href="accounts/register">Зарегистрироваться</a>
                     {% endif %}
                 </li>
             {% endblock %}
