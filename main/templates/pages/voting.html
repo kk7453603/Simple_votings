@@ -2,10 +2,13 @@
 
 
 {% block content %}
-    <p>{{voting.name}}</p>
-    <p>Автор опроса - {{ voting.author.username }} (ID {{ voting.author.id }})</p>
+
+    <p>Автор опроса - {{ voting_update.author.username }}</p>
     <hr>
-    <p>{{ voting.description }}</p>
+    <h3>{{ voting_update.name }}</h3>
+
+    <p>{{ voting_update.description }}</p>
+    <hr>
     <form method="post">
       {% csrf_token %}
       {% if voting.type == 0 %}
