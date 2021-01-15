@@ -14,10 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 from main import views
 from django.contrib.auth import views as auth_views
+
+from django_registration.backends.activation.views import RegistrationView
+from main.forms import UserForm
 
 from main.views import get_menu_context
 
@@ -37,4 +40,13 @@ urlpatterns = [
     ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('voting/<int:pk>', views.VotingUpdateView.as_view(), name='voting_update'),
+    # path('accounts/', include('django_registration.backends.one_step.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/register/',
+        RegistrationView.as_view(
+            form_class=UserForm
+        ),
+        name='django_registration_register',
+    ),
+    path('accounts/', include('django_registration.backends.activation.urls')),
 ]

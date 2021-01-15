@@ -64,7 +64,7 @@ ROOT_URLCONF = 'simple_votings.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +76,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.RemoteUserBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
 
 WSGI_APPLICATION = 'simple_votings.wsgi.application'
 
