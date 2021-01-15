@@ -11,6 +11,43 @@ class VotingUpdateView(DetailView):
     context_object_name = 'voting_update'
 
 
+# class VotingUpdateView(DetailView):
+#     model = Voting
+#     template_name = 'pages/voting.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(VotingUpdateView, self).get_context_data(**kwargs)
+#
+#         context = {
+#             'vote_variants': self.vote_variants,
+#             'curr_user': self.curr_user,
+#             'voting': self.voting,
+#         }
+#         return context
+#
+#     def post(self, request, **kwargs):
+#         self.vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
+#         self.voting = get_object_or_404(Voting, id=1)  # это id голосования
+#         self.vote_variants = self.voting.votevariant_set.all()
+#         self.curr_user = request.user
+#
+#         if self.vote_var is not None:  # массив ответов записывается в БД
+#             for var in self.vote_var:
+#                 variant = get_object_or_404(VoteVariant, id=var)
+#                 time = timezone.now()
+#                 vote_fact = VoteFact(author=self.curr_user, variant=variant, created=time)
+#                 vote_fact.save()
+#
+#         self.object = self.get_object()
+#         context = super(VotingUpdateView, self).get_context_data(**kwargs)
+#         context = {
+#             'vote_variants': self.vote_variants,
+#             'curr_user': self.curr_user,
+#             'voting': self.voting,
+#         }
+#         return self.render_to_response(context=context)
+
+
 def get_menu_context():
     return [
         {'url_name': 'index', 'name': 'Главная'},
@@ -24,28 +61,27 @@ def index_page(request):
         'author': 'Andrew',
         'pages': 4,
         'menu': get_menu_context()
-
     }
     return render(request, 'pages/index.html', context)
 
 
 def voting_page(request):
-    vote_var = request.GET.get('vote_var', None)
-    voting = get_object_or_404(Voting, id=1)
+    vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
+    voting = get_object_or_404(Voting, id=1)  # это id голосования
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
 
-    if vote_var is not None:
-        vote_var = get_object_or_404(VoteVariant, id=vote_var)
-        vote_fact = VoteFact(author=curr_user, variant=vote_var, created=timezone.now())
-        vote_fact.save()
+    if vote_var is not None:  # массив ответов записывается в БД
+        for var in vote_var:
+            variant = get_object_or_404(VoteVariant, id=var)
+            time = timezone.now()
+            vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
+            vote_fact.save()
 
     context = {
-        'name': voting.name,
-        'description': voting.description,
-        'author_name': curr_user.username,
-        'author': voting.author,
-        'vote_variants': vote_variants
+        'vote_variants': vote_variants,
+        'curr_user': curr_user,
+        'voting': voting,
     }
     return render(request, 'pages/voting.html', context)
 
