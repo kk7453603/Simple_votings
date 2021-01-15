@@ -1,8 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from main.models import Voting, VoteVariant, VoteFact
 
+class VotingUpdateView(DetailView):
+    model = Voting
+    template_name = 'pages/voting_update.html'
+    context_object_name = 'voting_update'
 
 def get_menu_context():
     return [

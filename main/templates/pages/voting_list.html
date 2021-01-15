@@ -3,9 +3,10 @@
     {% if request.user.is_authenticated %}
       <table class="table">
         <tr>
-          <td>username</td>
-          <td>name</td>
-          <td>description</td>
+          <td>Имя пользователя</td>
+          <td>Название опроса</td>
+          <td>Описание опроса</td>
+          <td>  </td>
         </tr>
 
         {% for record in history %}
@@ -13,6 +14,7 @@
           <td>{{ record.author.username }}</td>
           <td>{{ record.name }}</td>
           <td>{{ record.description }}</td>
+          <td> <a href="{% url 'voting_update' record.id %}" class="btn btn-warning"> Перейти </a> </td>
         </tr>
         {% endfor %}
       </table>
