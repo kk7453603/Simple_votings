@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from main.models import Voting, VoteVariant, VoteFact
+from main.models import Voting, VoteVariant, VoteFact, User
 
 
 def get_menu_context():
@@ -49,3 +50,20 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+
+def new_password(request):
+    password1 = request.POST.get('password1', None)
+    password2 = request.POST.get('password2', None)
+    context = {}
+    if request.method == 'POST':
+        if password1 == password2:
+            context['status'] = 1
+            adder = User.objects.filter(id=request.user.id)
+            adder.password = make_password(password1)
+            adder.save()
+
+            return redirect('/')
+        else:
+            context['status'] = 0
+    return render(request, 'registration/new_password.html', context)
