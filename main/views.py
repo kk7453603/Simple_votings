@@ -6,7 +6,7 @@ from main.models import Voting, VoteVariant, VoteFact
 
 class VotingUpdateView(DetailView):
     model = Voting
-    template_name = 'pages/voting_update.html'
+    template_name = 'pages/voting.html'
     context_object_name = 'voting_update'
 
 def get_menu_context():

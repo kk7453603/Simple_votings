@@ -3,9 +3,12 @@
 
 {% block content %}
 
-    <p>Автор опроса - {{ author_name }} (ID {{ author.id }})</p>
+    <p>Автор опроса - {{ voting_update.author.username }}</p>
     <hr>
-    <p>{{ description }}</p>
+    <h3>{{ voting_update.name }}</h3>
+
+    <p>{{ voting_update.description }}</p>
+    <hr>
     <form>
         {% for vote_var in vote_variants %}
             <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
