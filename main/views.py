@@ -4,15 +4,16 @@ from django.views.generic import DetailView
 
 from main.models import Voting, VoteVariant, VoteFact
 
+
 class VotingUpdateView(DetailView):
     model = Voting
     template_name = 'pages/voting.html'
     context_object_name = 'voting_update'
 
+
 def get_menu_context():
     return [
         {'url_name': 'index', 'name': 'Главная'},
-        {'url_name': 'voting', 'name': 'Голосование'},
         {'url_name': 'votings', 'name': 'Голосования'},
     ]
 
