@@ -6,7 +6,9 @@
 <form method="POST" action="/creating/">
   {% csrf_token %}
   <input type="text" id="header" name="header"></br>
-  <textarea id="text" name="text"></textarea>
+  <input id="content" type="text" name="el_1" class="Formel">
+  <button id="plus" onclick="add"></button>
+  <section class="Adder" ></section>
   <p><button type="submit">Создать</button></p>
 </form>
   {% if status is 1 %}
@@ -15,4 +17,15 @@
   <h3>Ошибка заполнения формы</h3>
   {% endif %}
 </div>
+<style>
+  Formel {}
+  Adder {display: none;}
+</style>
+<script language="JavaScript">
+  function add() {
+    inp=document.getElementById("content")
+    let s =  document.querySelector('.adder').options;
+    s[s.length]= new Option(inp.value,inp.value,true);
+  }
+</script>
 {% endblock %}
