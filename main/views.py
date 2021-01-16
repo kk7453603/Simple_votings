@@ -91,3 +91,12 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+
+def voting_results_page(request):
+    context = {
+        'user_name': request.user,
+        'vote_name': 'name',
+        'vote_results': '0%'
+    }
+    return render(request, 'pages/results.html', context)
