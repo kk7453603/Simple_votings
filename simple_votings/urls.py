@@ -19,8 +19,8 @@ from django.urls import include, path
 from main import views
 from django.contrib.auth import views as auth_views
 
-from django_registration.backends.activation.views import RegistrationView
-from main.forms import UserForm
+from django_registration.backends.one_step.views import RegistrationView
+from main.forms import CustomRegistrationForm
 
 from main.views import get_menu_context
 
@@ -45,7 +45,7 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/',
         RegistrationView.as_view(
-            form_class=UserForm
+            form_class=CustomRegistrationForm
         ),
         name='django_registration_register',
     ),

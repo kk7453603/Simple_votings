@@ -144,3 +144,5 @@ AUTH_USER_MODEL = 'main.User'
 # Проверка тех, кто ленится указать корректный SECRET_KEY
 if SECRET_KEY == 'Insert secret key here and uncomment this variable':
     raise RuntimeError('Сначала укажите SECRET_KEY. Подробности - в settings.py')
+
+ACCOUNT_ACTIVATION_DAYS = 7
