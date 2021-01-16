@@ -8,44 +8,38 @@ from main.models import Voting, VoteVariant, VoteFact
 class VotingUpdateView(DetailView):
     model = Voting
     template_name = 'pages/voting.html'
-    context_object_name = 'voting_update'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-# class VotingUpdateView(DetailView):
-#     model = Voting
-#     template_name = 'pages/voting.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(VotingUpdateView, self).get_context_data(**kwargs)
-#
-#         context = {
-#             'vote_variants': self.vote_variants,
-#             'curr_user': self.curr_user,
-#             'voting': self.voting,
-#         }
-#         return context
-#
-#     def post(self, request, **kwargs):
-#         self.vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
-#         self.voting = get_object_or_404(Voting, id=1)  # это id голосования
-#         self.vote_variants = self.voting.votevariant_set.all()
-#         self.curr_user = request.user
-#
-#         if self.vote_var is not None:  # массив ответов записывается в БД
-#             for var in self.vote_var:
-#                 variant = get_object_or_404(VoteVariant, id=var)
-#                 time = timezone.now()
-#                 vote_fact = VoteFact(author=self.curr_user, variant=variant, created=time)
-#                 vote_fact.save()
-#
-#         self.object = self.get_object()
-#         context = super(VotingUpdateView, self).get_context_data(**kwargs)
-#         context = {
-#             'vote_variants': self.vote_variants,
-#             'curr_user': self.curr_user,
-#             'voting': self.voting,
-#         }
-#         return self.render_to_response(context=context)
+        context.update({
+            'vote_variants': self.vote_variants,
+            'curr_user': self.curr_user,
+            'voting': self.voting,
+        })
+        return context
+
+    def post(self, request, **kwargs):
+        self.vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
+        self.voting = get_object_or_404(Voting, id=1)  # это id голосования
+        self.vote_variants = self.voting.votevariant_set.all()
+        self.curr_user = request.user
+
+        if self.vote_var is not None:  # массив ответов записывается в БД
+            for var in self.vote_var:
+                variant = get_object_or_404(VoteVariant, id=var)
+                time = timezone.now()
+                vote_fact = VoteFact(author=self.curr_user, variant=variant, created=time)
+                vote_fact.save()
+
+        self.object = self.get_object()
+        context = super(VotingUpdateView, self).get_context_data(**kwargs)
+        context.update({
+            'vote_variants': self.vote_variants,
+            'curr_user': self.curr_user,
+            'voting': self.voting,
+        })
+        return self.render_to_response(context=context)
 
 
 def get_menu_context():
