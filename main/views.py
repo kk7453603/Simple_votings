@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact
+from main.models import Voting, VoteVariant, VoteFact, Complaint
 
 
 class VotingUpdateView(DetailView):
@@ -48,6 +48,20 @@ def voting_page(request, pk):
         'voting': voting,
     }
     return render(request, 'pages/voting.html', context)
+
+def complaint_page(request, pk):
+    voting = get_object_or_404(Voting, id=pk)  # это id голосования
+    curr_user = request.user
+    reason = request.POST.get('text', None)
+    context = {}
+    context['voting_text'] = voting.description
+    user = request.user
+    if request.method == 'POST':
+        context['status'] = 1
+        adder = Complaint(author_id=user.id, description=reason,status=1,voting_id=pk)
+        adder.save()
+
+    return render(request, 'pages/voting_complaint.html', context)
 
 
 @login_required

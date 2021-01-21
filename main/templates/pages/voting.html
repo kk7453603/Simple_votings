@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <p>Автор опроса - {{ voting.author.username }}</p>
+    <p>Автор опроса - {{ voting.author.username }}</p> <a href="{% url 'voting_complaint' voting.id %}" type="submit" class="btn btn-danger">Пожаловаться</a>
     <hr>
     <h3>{{ voting.name }}</h3>
 
