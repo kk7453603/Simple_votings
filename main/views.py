@@ -1,7 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+import datetime
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from main.models import Voting, VoteVariant, VoteFact
+
+from main.models import Voting
 
 
 def get_menu_context():
@@ -9,6 +12,7 @@ def get_menu_context():
         {'url_name': 'index', 'name': 'Главная'},
         {'url_name': 'voting', 'name': 'Голосование'},
         {'url_name': 'votings', 'name': 'Голосования'},
+        {'url_name': 'create', 'name': 'Создания голосования'},
     ]
 
 
@@ -49,3 +53,22 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+
+def voting_creation_page(request):
+    header = request.POST.get('header', None)
+    text = request.POST.get('text', None)
+    context = {}
+    user = request.user
+    if request.method == 'POST':
+        # form = Addform(request.POST)
+        # if form.is_valid():
+        context['status'] = 1
+        adder = Voting(author=request.user, name=header, description=text, type=1,
+                       published=datetime.datetime.now(), finished=datetime.datetime.now(), is_active=1)
+        adder.save()
+        redirect('')
+        # else:
+        # context['status'] = 1
+
+    return render(request, 'pages/add_votings.html', context)

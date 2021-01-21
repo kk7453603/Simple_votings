@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div  class="row mt-3">
+<h1>Создание голосований</h1><br>
+<form method="POST" action="/create/">
+  {% csrf_token %}
+  <input type="text" id="header" name="header"><br>
+  <textarea id="text" name="text"></textarea><br>
+
+
+
+
+
+<from action ="{% url 'post_new' %}" method = "post">
+        <div class="form_radio_btn">
+            <input id="radio-40" type="radio" name="radio" value="51"  checked>
+            <label for="radio-40">Месяц вперед</label>
+        </div>
+{% endfor %}
+
+
+
+
+
+  <button type="submit">Создать</button><br>
+</form>
+  {% if status is 1 %}
+  <h3>Успешно добавлено</h3>
+  {% elif status is 0 %}
+  <h3>Ошибка заполнения формы</h3>
+  {% endif %}
+</div>
+{% endblock %}
