@@ -36,20 +36,22 @@ def voting_page(request, pk):
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
 
-    vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
-    if vote_var is not None:  # массив ответов записывается в БД
-        for var in vote_var:
-            variant = get_object_or_404(VoteVariant, id=var)
-            time = timezone.now()
-            vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
-            vote_fact.save()
-
-    context = {
-        'vote_variants': vote_variants,
-        'curr_user': curr_user,
-        'voting': voting,
-    }
-    return render(request, 'pages/voting.html', context)
+    if request.method == "POST":
+        vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
+        if vote_var is not None:  # массив ответов записывается в БД
+            for var in vote_var:
+                variant = get_object_or_404(VoteVariant, id=var)
+                time = timezone.now()
+                vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
+                vote_fact.save()
+        return HttpResponseRedirect('/votings')
+    elif request.method == "GET":
+        context = {
+            'vote_variants': vote_variants,
+            'curr_user': curr_user,
+            'voting': voting,
+        }
+        return render(request, 'pages/voting.html', context)
 
 
 def complaint_page(request, pk):
@@ -97,6 +99,7 @@ def voting_creation_page(request):
         for i in vote_variants:
             vote_var = VoteVariant(description=i, voting_id=voting_id)
             vote_var.save()
+        return HttpResponseRedirect("/votings")
     return render(request, 'pages/creating.html', context)
 
 
