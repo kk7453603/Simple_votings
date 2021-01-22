@@ -87,3 +87,18 @@ def voting_creation_page(request):
             vote_var = VoteVariant(description=i, voting_id=voting_id)
             vote_var.save()
     return render(request, 'pages/creating.html', context)
+
+def voting_editing_page(request, pk):
+    # curr_user = request.user
+    voting = get_object_or_404(Voting, id=pk)
+    if request.method == "POST":
+        vote_name = request.POST.get('voting_name', None)
+        vote_description = request.POST.get('voting_description', None)
+        voting.name = vote_name
+        voting.description = vote_description
+        voting.save()
+    # if curr_user == voting.author:
+    context = {
+        'voting': voting,
+    }
+    return render(request, 'pages/editing.html', context)

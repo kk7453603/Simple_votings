@@ -27,5 +27,6 @@
           {% endfor %}
       {% endif %}
     </form>
-
+    <button > Изменить </button>
+    <a href="{% url 'voting_editing' record.id %}" class="btn btn-primary">Изменить</a>
 {% endblock %}

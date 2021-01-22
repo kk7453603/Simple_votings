@@ -51,5 +51,6 @@ urlpatterns = [
     ),
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('voting/<int:pk>/complaint/', views.complaint_page, name='voting_complaint'),
+    path('voting/<int:pk>/editing/', views.voting_editing_page, name='voting_editing'),
     path('creating/', views.voting_creation_page, name='voting_create'),
 ]
