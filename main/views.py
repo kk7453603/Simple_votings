@@ -59,8 +59,8 @@ def voting_list_page(request):
 
 
 def profile_page(request):
-    user = request.user
-    context = {
-        'user': user
-    }
-    return render(request, 'pages/profile.html', context)
+    return render(request, 'pages/profile.html')
+
+
+def profile_editing_page(request):
+    return render(request, 'pages/profile_editing.html')
