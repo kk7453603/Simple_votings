@@ -50,4 +50,5 @@ urlpatterns = [
         name='django_registration_register',
     ),
     path('accounts/', include('django_registration.backends.activation.urls')),
+    path('profile/', views.profile_page, name='profile'),
 ]

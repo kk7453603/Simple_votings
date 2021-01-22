@@ -56,3 +56,11 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+
+def profile_page(request):
+    user = request.user
+    context = {
+        'user': user
+    }
+    return render(request, 'pages/profile.html', context)
