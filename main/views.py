@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact, Complaint
+from main.models import Voting, VoteVariant, VoteFact, Complaint, User
 
 
 class VotingUpdateView(DetailView):
@@ -50,8 +51,9 @@ def voting_page(request, pk):
     }
     return render(request, 'pages/voting.html', context)
 
+
 def complaint_page(request, pk):
-    voting = get_object_or_404(Voting, id=pk)  # это id голосования
+    voting = get_object_or_404(Voting, id=pk)
     curr_user = request.user
     reason = request.POST.get('text', None)
     context = {}
@@ -71,6 +73,7 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
 
 @login_required
 def complaint_list_page(request):
@@ -95,3 +98,20 @@ def voting_creation_page(request):
             vote_var = VoteVariant(description=i, voting_id=voting_id)
             vote_var.save()
     return render(request, 'pages/creating.html', context)
+
+
+def profile_page(request):
+    return render(request, 'pages/profile.html')
+
+
+def profile_editing_page(request):
+    if request.method == 'POST':
+        user = User.objects.get(id=request.user.pk)
+        user.username = request.POST.get('username')
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.save()
+        return HttpResponseRedirect("/profile")
+    elif request.method == 'GET':
+        return render(request, 'pages/profile_editing.html')

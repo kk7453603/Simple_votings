@@ -41,8 +41,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('voting/<int:pk>/', views.voting_page, name='voting'),
     path('voting/<int:pk>/edit/', views.VotingUpdateView.as_view(), name='voting_update'),
-    # path('accounts/', include('django_registration.backends.one_step.urls')),
-    # path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/',
         RegistrationView.as_view(
             form_class=CustomRegistrationForm
@@ -52,5 +50,7 @@ urlpatterns = [
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('voting/<int:pk>/complaint/', views.complaint_page, name='voting_complaint'),
     path('creating/', views.voting_creation_page, name='voting_create'),
-    path('complaint_list/',views.complaint_list_page,name='complaint_list')
+    path('complaint_list/', views.complaint_list_page, name='complaint_list'),
+    path('profile/', views.profile_page, name='profile'),
+    path('profile/editing/', views.profile_editing_page, name='profile_editing'),
 ]
