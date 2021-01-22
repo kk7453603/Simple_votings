@@ -16,6 +16,7 @@ def get_menu_context():
     return [
         {'url_name': 'index', 'name': 'Главная'},
         {'url_name': 'votings', 'name': 'Голосования'},
+        {'url_name': 'complaint_list', 'name': 'Список жалоб'},
     ]
 
 
@@ -58,7 +59,7 @@ def complaint_page(request, pk):
     user = request.user
     if request.method == 'POST':
         context['status'] = 1
-        adder = Complaint(author_id=user.id, description=reason,status=1,voting_id=pk)
+        adder = Complaint(author_id=user.id, description=reason,status=0,voting_id=pk)
         adder.save()
 
     return render(request, 'pages/voting_complaint.html', context)
@@ -70,6 +71,13 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+@login_required
+def complaint_list_page(request):
+    context = {
+        'history': Complaint.objects.filter(author_id=request.user.id)
+    }
+    return render(request, 'pages/complaint_list.html', context)
 
 
 def voting_creation_page(request):
