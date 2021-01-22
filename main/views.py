@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact
+from main.models import Voting, VoteVariant, VoteFact, User
 
 
 class VotingUpdateView(DetailView):
@@ -63,4 +64,13 @@ def profile_page(request):
 
 
 def profile_editing_page(request):
-    return render(request, 'pages/profile_editing.html')
+    if request.method == 'POST':
+        user = User.objects.get(id=request.user.pk)
+        user.username = request.POST.get('username')
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.save()
+        return HttpResponseRedirect("/profile")
+    elif request.method == 'GET':
+        return render(request, 'pages/profile_editing.html')
