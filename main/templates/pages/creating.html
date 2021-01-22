@@ -2,7 +2,6 @@
 
 
 {% block content %}
-  <p>Создание голосования</p>
 
 <form method="post" id="vote_form">
       {% csrf_token %}
@@ -24,13 +23,13 @@
 
   <br>
       <input type="number" placeholder="Количество вопросов" id="count_variants"> <br>
-      <button type='button' id="create_variants" onclick="add_variants()">Сделать</button> <br>
+      <button type='button' class="btn btn-secondary" id="create_variants" onclick="add_variants()">Сделать</button> <br>
       <div id="variants">
 
       </div>
 
       <hr>
-      <button type="submit">Создать</button>
+      <button type="submit" class="btn btn-success">Создать</button>
 </form>
 
 <script>

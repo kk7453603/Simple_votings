@@ -50,5 +50,5 @@ urlpatterns = [
         name='django_registration_register',
     ),
     path('accounts/', include('django_registration.backends.activation.urls')),
-    path('creating/', views.voting_creation_page),
+    path('creating/', views.voting_creation_page, name='voting_create'),
 ]

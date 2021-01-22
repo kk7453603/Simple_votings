@@ -67,7 +67,8 @@ def voting_creation_page(request):
         vote_variants = request.POST.getlist('vote_var', None)
         voting = Voting(author=curr_user, name=vote_name, description=vote_description, type=vote_type, published=timezone.now(), finished=timezone.now(), is_active=1)
         voting.save()
+        voting_id = voting.pk
         for i in vote_variants:
-            vote_var = VoteVariant(description=i, voting_id=Voting.objects.latest('id'))
+            vote_var = VoteVariant(description=i, voting_id=voting_id)
             vote_var.save()
     return render(request, 'pages/creating.html', context)
