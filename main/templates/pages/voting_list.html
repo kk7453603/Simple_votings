@@ -7,7 +7,7 @@
       <td>Имя пользователя</td>
       <td>Название опроса</td>
       <td>Описание опроса</td>
-      <td>  </td>
+      <td> <a href="{% url 'voting_create' %}" class="btn btn-primary"> Добавить </a> </td>
     </tr>
 
     {% for record in history %}

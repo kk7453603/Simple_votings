@@ -70,3 +70,20 @@ def voting_list_page(request):
         'history': Voting.objects.all()
     }
     return render(request, 'pages/voting_list.html', context)
+
+
+def voting_creation_page(request):
+    context = {}
+    if request.method == "POST":
+        vote_name = request.POST.get('voting_name', None)
+        vote_description = request.POST.get('voting_description', None)
+        vote_type = request.POST.get('voting_type', None)
+        curr_user = request.user
+        vote_variants = request.POST.getlist('vote_var', None)
+        voting = Voting(author=curr_user, name=vote_name, description=vote_description, type=vote_type, published=timezone.now(), finished=timezone.now(), is_active=1)
+        voting.save()
+        voting_id = voting.pk
+        for i in vote_variants:
+            vote_var = VoteVariant(description=i, voting_id=voting_id)
+            vote_var.save()
+    return render(request, 'pages/creating.html', context)
