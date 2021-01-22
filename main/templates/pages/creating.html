@@ -15,15 +15,14 @@
       <input type="text" placeholder="Описание" id="voting_description" name="voting_description"> <br>
 
       <label for="voting_types"><b>Выберите тип голосования</b></label> <br>
-      <select name="voting_type" id="voting_types">
+      <select name="voting_type" id="voting_types" onchange="check_count()">
         <option value="0">Выбор одного варианта</option>
         <option value="1">Выбор нескольких вариантов</option>
         <option value="2">Дискретное голосование</option>
       </select>
 
   <br>
-      <input type="number" placeholder="Количество вариантов" id="count_variants"> <br>
-      <button type='button' class="btn btn-secondary" id="create_variants" onclick="add_variants()">Сделать</button> <br>
+      <input type="number" placeholder="Количество вариантов" id="count_variants" onchange="check_count()"> <br>
       <div id="variants">
 
       </div>
@@ -33,8 +32,24 @@
 </form>
 
 <script>
+  function check_count(){
+    type = document.getElementById("voting_types").value;
+    let count = document.getElementById('count_variants').value;
+    if(type == 2){
+      if (count > 2){
+        document.getElementById('count_variants').value = 2;
+      }
+    }
+    else{
+      if (count > 10){
+        document.getElementById('count_variants').value = 10;
+      }
+    }
+    add_variants();
+  }
   function add_variants(){
     let count = document.getElementById('count_variants').value;
+    type = document.getElementById("voting_types").value;
     let container = document.getElementById('variants');
     container.innerHTML =  '';
     for (let i = 0; i < count; i++) {
