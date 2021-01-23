@@ -118,3 +118,14 @@ def profile_editing_page(request):
         return HttpResponseRedirect("/profile")
     elif request.method == 'GET':
         return render(request, 'pages/profile_editing.html')
+
+
+def voting_results_page(request):
+    context = {
+        'history': Voting.objects.all(),
+        'user_name': 'request.user.username',
+        'vote_name': 'request.voting.name',
+        'col1': '10',
+        'votes': (('быть или не быть', 500, -390), ('dsfdsf', int(500 * 50 / 200), -15), ('sdfsd', 80, 30))
+    }
+    return render(request, 'pages/results.html', context)

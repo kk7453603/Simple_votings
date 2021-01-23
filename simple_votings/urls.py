@@ -53,4 +53,5 @@ urlpatterns = [
     path('complaint_list/', views.complaint_list_page, name='complaint_list'),
     path('profile/', views.profile_page, name='profile'),
     path('profile/editing/', views.profile_editing_page, name='profile_editing'),
+    path('results/', views.voting_results_page, name='voting results'),
 ]

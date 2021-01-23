@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  {% load bootstrap4 %}
+    <head>
+        <meta charset="utf-8">
+        <title>Document</title>
+        <style>
+          #graph.graph{
+            height: 0px;
+            margin: auto;
+            margin-top: 600px;
+            padding: 5px;
+          }
+          #graph .item{
+            margin: 2px;
+            color: #fff;
+            text-shadow: 1px 1px 1px #000;
+            padding-left: 5px;
+            padding-right: 5px;
+            border-radius: 3px;
+            background-color: #00508C;
+            box-shadow: 0 0 1px #2280AC;
+          }
+          #graph .item:hover{
+            background-color: #2280AC;
+            box-shadow: 0 0 2px #2280AC;
+          }
+          #graph.vertical .item{
+            width: auto;
+            float: left;
+            display: inline-block;
+          }
+        </style>
+
+        {% bootstrap_css %}
+        <link href="https://getbootstrap.com/docs/4.1/examples/sticky-footer-navbar/sticky-footer-navbar.css"
+              rel="stylesheet">
+        {% block extra_css %} {% endblock %}
+    </head>
+    <body>
+        <header>
+            {% include 'base/menu.html' %}
+        </header>
+
+        <div class="row mt-3">
+            <div id="graph" class="graph vertical">
+              {% for i in votes %}
+                <div class="item" style="height:{{i.1}}px;margin-top:{{i.2}}px">
+                  <p> {{i.0}} </p>
+                  <p> {{i.0}} </p>
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+
+        <main role="main" class="container">
+            {% bootstrap_messages %}
+            {% block content %} {% endblock %}
+        </main>
+
+        <footer class="footer">
+            {% block footer %}
+                <div class="container text-right">
+                    <span class="text-muted">&copy; ШП, {% now "Y" %}</span>
+                </div>
+            {% endblock %}
+        </footer>
+
+        {% block extra_js %}
+            {% bootstrap_javascript jquery='full' %}
+        {% endblock %}
+    </body>
+</html>
