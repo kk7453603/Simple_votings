@@ -16,7 +16,10 @@
 
   <br>
       <div id="variants">
-
+        <b>Варианты ответа</b> <br>
+        {% for record in vote_vars %}
+          <input type="text" id="vote_var" name="vote_var" value="{{record.description}}"> <br>
+        {% endfor %}
       </div>
 
       <hr>
@@ -24,21 +27,6 @@
 </form>
 
 <script>
-  function check_count(){
-    type = document.getElementById("voting_types").value;
-    let count = document.getElementById('count_variants').value;
-    if(type == 2){
-      if (count > 2){
-        document.getElementById('count_variants').value = 2;
-      }
-    }
-    else{
-      if (count > 10){
-        document.getElementById('count_variants').value = 10;
-      }
-    }
-    add_variants();
-  }
   function add_variants(){
     let count = document.getElementById('count_variants').value;
     type = document.getElementById("voting_types").value;
