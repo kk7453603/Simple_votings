@@ -121,6 +121,15 @@ def voting_editing_page(request, pk):
                 i.save()
             return HttpResponseRedirect(f'/voting/{pk}')
 
+        context = {
+            'voting': voting,
+            'vote_vars': vote_vars,
+        }
+    else:
+        return HttpResponseRedirect("/votings/")
+    return render(request, 'pages/editing.html', context)
+
+
 def profile_page(request):
     return render(request, 'pages/profile.html')
 
