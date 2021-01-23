@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <p>Автор опроса - {{ voting.author.username }}</p> <a href="{% url 'voting_complaint' voting.id %}" type="submit" class="btn btn-danger">Пожаловаться</a>
+    <p>Автор опроса - {{ voting.author.username }}</p> <a href="{% url 'voting_complaint' voting.id %}" type="submit" class="btn btn-danger btn-sm">Пожаловаться</a>
     <hr>
     <h3>{{ voting.name }}</h3>
 
@@ -27,5 +27,7 @@
           {% endfor %}
       {% endif %}
     </form>
-
+    {% if curr_user.id == voting.author_id %}
+      <a href="{% url 'voting_editing' voting.id %}" class="btn btn-primary btn-sm">Изменить</a>
+    {% endif %}
 {% endblock %}
