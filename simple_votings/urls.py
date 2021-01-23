@@ -40,7 +40,7 @@ urlpatterns = [
     ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('voting/<int:pk>/', views.voting_page, name='voting'),
-    path('voting/<int:pk>/edit/', views.VotingUpdateView.as_view(), name='voting_update'),
+    # path('voting/<int:pk>/edit/', views.VotingUpdateView.as_view(), name='voting_update'),
     # path('accounts/', include('django_registration.backends.one_step.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/',

@@ -49,6 +49,7 @@ def voting_page(request, pk):
     }
     return render(request, 'pages/voting.html', context)
 
+
 def complaint_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)  # это id голосования
     curr_user = request.user
@@ -88,6 +89,7 @@ def voting_creation_page(request):
             vote_var.save()
     return render(request, 'pages/creating.html', context)
 
+
 def voting_editing_page(request, pk):
     context = {}
     curr_user = request.user
@@ -104,6 +106,7 @@ def voting_editing_page(request, pk):
             for i, j in zip(vote_vars, vote_vars_edited):
                 i.description = j
                 i.save()
+            return HttpResponseRedirect(f'/voting/{pk}')
 
         context = {
             'voting': voting,
