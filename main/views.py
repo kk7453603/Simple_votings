@@ -35,11 +35,15 @@ def voting_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)  # это id голосования
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
+    if VoteFact.objects.filter(author_id=curr_user):
+        votefact = True
+    else:
+        votefact = False
     if timezone.now() > voting.finished:
         voting.is_active = 0
         voting.save()
     if request.method == "POST":
-        if not VoteFact.objects.filter(author_id=curr_user):
+        if not votefact:
             if voting.is_active:
                 vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
                 if vote_var is not None:  # массив ответов записывается в БД
@@ -54,6 +58,7 @@ def voting_page(request, pk):
             'vote_variants': vote_variants,
             'curr_user': curr_user,
             'voting': voting,
+            'votefact': votefact
         }
         return render(request, 'pages/voting.html', context)
 
