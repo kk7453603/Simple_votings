@@ -33,6 +33,7 @@ class VoteVariant(models.Model):
 class VoteFact(models.Model):
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     variant = models.ForeignKey(to=VoteVariant, on_delete=models.CASCADE)
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     created = models.DateTimeField()
 
 
@@ -46,3 +47,7 @@ class Complaint(models.Model):
 class FavouriteVoting(models.Model):
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
+
+class VotingImages(models.Model):
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)

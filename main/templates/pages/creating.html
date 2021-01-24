@@ -25,6 +25,9 @@
       <label for="finish_date"><b>Дата окончания</b></label> <br>
       <input class="form-control" id="finish_date"  type = "datetime-local" name="finish_date" max="9999-12-31T23:59" required> <br> <br>
 
+      <label for="image_files" class="btn btn-secondary">Выберите картинки</label>
+      <input type="file" id="image_files" name="image_files" accept=".jpg, .jpeg, .png" style="visibility:hidden;" multiple><br><br>
+
       <label for="count_variants"><b>Варианты ответа</b></label><br>
       <input type="number" placeholder="Количество вариантов" id="count_variants" onchange="check_count()" required> <br> <br>
       <div id="variants">

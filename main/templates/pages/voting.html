@@ -10,6 +10,14 @@
     <p>{{ voting.description }}</p>
     <hr>
     {%if voting.is_active and not votefact%}
+      {% if images %}
+        {% for i in images %}
+          <img src="{{i.image.url}}" alt="/media/images/rap.jpg">
+          <img src="/media/images/rap.jpg" alt="/media/images/rap.jpg">
+          <p>{{i.image.url}}</p>
+        {% endfor %}
+      {% endif %}
+
       <form method="post">
         {% csrf_token %}
         {% if voting.type == 0 %}

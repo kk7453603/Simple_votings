@@ -21,6 +21,9 @@ from django.contrib.auth import views as auth_views
 
 from django_registration.backends.one_step.views import RegistrationView
 from main.forms import CustomRegistrationForm
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from main.views import get_menu_context
 
@@ -54,3 +57,8 @@ urlpatterns = [
     path('profile/', views.profile_page, name='profile'),
     path('profile/editing/', views.profile_editing_page, name='profile_editing'),
 ]
+# urlpatterns += staticfiles_urlpatterns()
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)

@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact, Complaint, User
+from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VotingImages
 from datetime import datetime
 
 class VotingUpdateView(DetailView):
@@ -35,7 +35,8 @@ def voting_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)  # это id голосования
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
-    if VoteFact.objects.filter(author_id=curr_user):
+    images = VotingImages.objects.filter(voting=voting)
+    if VoteFact.objects.filter(voting=voting):
         votefact = True
     else:
         votefact = False
@@ -50,7 +51,7 @@ def voting_page(request, pk):
                     for var in vote_var:
                         variant = get_object_or_404(VoteVariant, id=var)
                         time = timezone.now()
-                        vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
+                        vote_fact = VoteFact(author=curr_user, variant=variant, created=time, voting=voting)
                         vote_fact.save()
         return HttpResponseRedirect('/votings')
     elif request.method == "GET":
@@ -58,7 +59,8 @@ def voting_page(request, pk):
             'vote_variants': vote_variants,
             'curr_user': curr_user,
             'voting': voting,
-            'votefact': votefact
+            'votefact': votefact,
+            'images': images
         }
         return render(request, 'pages/voting.html', context)
 
@@ -103,6 +105,7 @@ def voting_creation_page(request):
         curr_user = request.user
         vote_variants = request.POST.getlist('vote_var', None)
         date_finish = request.POST.get('finish_date', timezone.now())
+        images = request.POST.getlist('image_files', None)
 
         voting = Voting(author=curr_user, name=vote_name, description=vote_description, type=vote_type, published=timezone.now(), finished=date_finish, is_active=1)
         voting.save()
@@ -110,6 +113,10 @@ def voting_creation_page(request):
         for i in vote_variants:
             vote_var = VoteVariant(description=i, voting_id=voting_id)
             vote_var.save()
+        for i in images:
+            if i:
+                image = VotingImages(voting_id=voting_id, image=i)
+                image.save()
         return HttpResponseRedirect("/votings")
     return render(request, 'pages/creating.html', context)
 
