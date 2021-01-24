@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.generic import DetailView
 
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User
-
+from datetime import datetime
 
 class VotingUpdateView(DetailView):
     model = Voting
@@ -35,15 +35,19 @@ def voting_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)  # это id голосования
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
-
+    if timezone.now() > voting.finished:
+        voting.is_active = 0
+        voting.save()
     if request.method == "POST":
-        vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
-        if vote_var is not None:  # массив ответов записывается в БД
-            for var in vote_var:
-                variant = get_object_or_404(VoteVariant, id=var)
-                time = timezone.now()
-                vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
-                vote_fact.save()
+        if not VoteFact.objects.filter(author_id=curr_user):
+            if voting.is_active:
+                vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
+                if vote_var is not None:  # массив ответов записывается в БД
+                    for var in vote_var:
+                        variant = get_object_or_404(VoteVariant, id=var)
+                        time = timezone.now()
+                        vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
+                        vote_fact.save()
         return HttpResponseRedirect('/votings')
     elif request.method == "GET":
         context = {
@@ -93,7 +97,9 @@ def voting_creation_page(request):
         vote_type = request.POST.get('voting_type', None)
         curr_user = request.user
         vote_variants = request.POST.getlist('vote_var', None)
-        voting = Voting(author=curr_user, name=vote_name, description=vote_description, type=vote_type, published=timezone.now(), finished=timezone.now(), is_active=1)
+        date_finish = request.POST.get('finish_date', timezone.now())
+
+        voting = Voting(author=curr_user, name=vote_name, description=vote_description, type=vote_type, published=timezone.now(), finished=date_finish, is_active=1)
         voting.save()
         voting_id = voting.pk
         for i in vote_variants:
