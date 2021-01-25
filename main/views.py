@@ -39,15 +39,19 @@ def voting_page(request, pk):
     if timezone.now() > voting.finished:
         voting.is_active = 0
         voting.save()
+    if VoteFact.objects.filter(voting=voting):
+        votefact = True
+    else:
+        votefact = False
     if request.method == "POST":
-        if not VoteFact.objects.filter(author_id=curr_user): #TODO доделать голосование только один раз
+        if not votefact:
             if voting.is_active:
                 vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
                 if vote_var is not None:  # массив ответов записывается в БД
                     for var in vote_var:
                         variant = get_object_or_404(VoteVariant, id=var)
                         time = timezone.now()
-                        vote_fact = VoteFact(author=curr_user, variant=variant, created=time)
+                        vote_fact = VoteFact(voting=voting, author=curr_user, variant=variant, created=time)
                         vote_fact.save()
         return HttpResponseRedirect('/votings')
     elif request.method == "GET":
@@ -55,7 +59,8 @@ def voting_page(request, pk):
             'vote_variants': vote_variants,
             'curr_user': curr_user,
             'voting': voting,
-            'images': images
+            'votefact': votefact,
+            'images': images,
         }
         return render(request, 'pages/voting.html', context)
 

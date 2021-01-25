@@ -31,6 +31,7 @@ class VoteVariant(models.Model):
 
 
 class VoteFact(models.Model):
+    voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     variant = models.ForeignKey(to=VoteVariant, on_delete=models.CASCADE)
     created = models.DateTimeField()
