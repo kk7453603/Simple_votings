@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact, Complaint, User
+from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
 from datetime import datetime
 
 class VotingUpdateView(DetailView):
@@ -35,11 +35,12 @@ def voting_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)  # это id голосования
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
+    images = VoteImages.objects.filter(voting=voting)
     if timezone.now() > voting.finished:
         voting.is_active = 0
         voting.save()
     if request.method == "POST":
-        if not VoteFact.objects.filter(author_id=curr_user):
+        if not VoteFact.objects.filter(author_id=curr_user): #TODO доделать голосование только один раз
             if voting.is_active:
                 vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
                 if vote_var is not None:  # массив ответов записывается в БД
@@ -54,6 +55,7 @@ def voting_page(request, pk):
             'vote_variants': vote_variants,
             'curr_user': curr_user,
             'voting': voting,
+            'images': images
         }
         return render(request, 'pages/voting.html', context)
 
@@ -98,6 +100,7 @@ def voting_creation_page(request):
         curr_user = request.user
         vote_variants = request.POST.getlist('vote_var', None)
         date_finish = request.POST.get('finish_date', timezone.now())
+        images = request.POST.getlist('images_url', None)
 
         voting = Voting(author=curr_user, name=vote_name, description=vote_description, type=vote_type, published=timezone.now(), finished=date_finish, is_active=1)
         voting.save()
@@ -105,6 +108,9 @@ def voting_creation_page(request):
         for i in vote_variants:
             vote_var = VoteVariant(description=i, voting_id=voting_id)
             vote_var.save()
+        for i in images:
+            image = VoteImages(voting_id=voting_id, image_url=i)
+            image.save()
         return HttpResponseRedirect("/votings")
     return render(request, 'pages/creating.html', context)
 

@@ -31,6 +31,9 @@
 
       </div>
 
+      <label for="count_images"><b>Добавьте картинки</b></label><br>
+      <input type="number" placeholder="Количество картинок" id="count_images" onchange="check_count_img()" required> <br> <br>
+
       <div id="images">
 
       </div>
@@ -62,6 +65,21 @@
     container.innerHTML =  '';
     for (let i = 0; i < count; i++) {
       container.innerHTML+=  ' <input name="vote_var" type="text" form="vote_form" required> <br>';
+    }
+  }
+  function check_count_img(){
+    let count = document.getElementById('count_images').value;
+      if (count > 10){
+        document.getElementById('count_images').value = 10;
+      }
+    add_urls();
+  }
+  function add_urls(){
+    let count = document.getElementById('count_images').value;
+    let container = document.getElementById('images');
+    container.innerHTML =  '';
+    for (let i = 0; i < count; i++) {
+      container.innerHTML+=  ' <input type="text" placeholder="Ссылка" id="images_url" name="images_url" required> <br>';
     }
   }
 </script>
