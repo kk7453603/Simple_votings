@@ -146,3 +146,12 @@ if SECRET_KEY == 'Insert secret key here and uncomment this variable':
     raise RuntimeError('Сначала укажите SECRET_KEY. Подробности - в settings.py')
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+#SMTP Configuration
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '' #ввести gmail
+EMAIL_HOST_PASSWORD = '' # ввести пароль от gmail
