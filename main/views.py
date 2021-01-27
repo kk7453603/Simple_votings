@@ -61,6 +61,7 @@ def voting_page(request, pk):
             'voting': voting,
             'votefact': votefact,
             'images': images,
+            'menu': get_menu_context(),
         }
         return render(request, 'pages/voting.html', context)
 
@@ -69,12 +70,14 @@ def complaint_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)
     curr_user = request.user
     reason = request.POST.get('text', None)
-    context = {}
-    context['voting_text'] = voting.description
+    context = {
+        'voting_text': voting.description,
+        'menu': get_menu_context(),
+    }
     user = request.user
     if request.method == 'POST':
         context['status'] = 1
-        adder = Complaint(author_id=user.id, description=reason,status=0,voting_id=pk)
+        adder = Complaint(author_id=user.id, description=reason, status=0, voting_id=pk)
         adder.save()
 
     return render(request, 'pages/voting_complaint.html', context)
@@ -83,7 +86,8 @@ def complaint_page(request, pk):
 @login_required
 def voting_list_page(request):
     context = {
-        'history': Voting.objects.all()
+        'history': Voting.objects.all(),
+        'menu': get_menu_context(),
     }
     return render(request, 'pages/voting_list.html', context)
 
@@ -91,13 +95,16 @@ def voting_list_page(request):
 @login_required
 def complaint_list_page(request):
     context = {
-        'history': Complaint.objects.filter(author_id=request.user.id)
+        'history': Complaint.objects.filter(author_id=request.user.id),
+        'menu': get_menu_context(),
     }
     return render(request, 'pages/complaint_list.html', context)
 
 
 def voting_creation_page(request):
-    context = {}
+    context = {
+        'menu': get_menu_context(),
+    }
     if request.method == "POST":
         vote_name = request.POST.get('voting_name', None)
         vote_description = request.POST.get('voting_description', None)
@@ -121,7 +128,9 @@ def voting_creation_page(request):
 
 
 def voting_editing_page(request, pk):
-    context = {}
+    context = {
+        'menu': get_menu_context(),
+    }
     curr_user = request.user
     voting = get_object_or_404(Voting, id=pk)
     if curr_user == voting.author:
@@ -141,6 +150,7 @@ def voting_editing_page(request, pk):
         context = {
             'voting': voting,
             'vote_vars': vote_vars,
+            'menu': get_menu_context(),
         }
     else:
         return HttpResponseRedirect("/votings/")
@@ -163,13 +173,17 @@ def voting_results(request, pk):
     context = {
         'votefact': votefact,
         'statistic': statistic,
-        'voting': voting
+        'voting': voting,
+        'menu': get_menu_context(),
     }
     return render(request, 'pages/voting_results.html', context)
 
 
 def profile_page(request):
-    return render(request, 'pages/profile.html')
+    context = {
+        'menu': get_menu_context(),
+    }
+    return render(request, 'pages/profile.html', context)
 
 
 def profile_editing_page(request):
@@ -182,4 +196,7 @@ def profile_editing_page(request):
         user.save()
         return HttpResponseRedirect("/profile")
     elif request.method == 'GET':
-        return render(request, 'pages/profile_editing.html')
+        context = {
+            'menu': get_menu_context(),
+        }
+        return render(request, 'pages/profile_editing.html', context)
