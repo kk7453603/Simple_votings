@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+{% if votefact %}
+
+
+  <div id="donut_single" style="width: 1000px; height: 700px; margin-left: auto; margin-right: auto;"></div>
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+   <script type="text/javascript">
+     google.load("visualization", "1", {packages:["corechart"]});
+     google.setOnLoadCallback(drawChart);
+     function drawChart() {
+
+       var data = google.visualization.arrayToDataTable([
+         ['Voting', '{{ voting.description }}'],
+        {% for key, value in statistic.items %}
+            ['{{ key }}',    {{ value }}],
+        {% endfor %}
+       ]);
+
+       var options = {
+         title: '{{ voting.name }}',
+         pieHole: 0.5,
+       };
+
+       var chart = new google.visualization.PieChart(document.getElementById('donut_single'));
+       chart.draw(data, options);
+     }
+   </script>
+{% else %}
+  <b> Вы ещё не проголосовали </b>
+{% endif %}
+
+<a href="{% url 'voting' voting.id %}" type="submit" class="btn btn-dark"> Вернуться </a>
+
+{% endblock %}

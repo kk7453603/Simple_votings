@@ -36,10 +36,11 @@
       {% endif %}
     {%else%}
       {% if votefact %}
-        <b> Вы уже проголосовали </b>
+        <b> Вы уже проголосовали </b> <br>
       {% else %}
-        <b>Голосование завершено</b>
+        <b>Голосование завершено</b> <br>
       {% endif %}
+      <a href="{% url 'voting_results' voting.id %}" type="submit" class="btn btn-info">Посмотреть результаты</a>
     {% endif %}
     <br>
     <a href="{% url 'voting_complaint' voting.id %}" type="submit" class="btn btn-danger btn-sm">Пожаловаться</a>

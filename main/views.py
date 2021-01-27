@@ -39,7 +39,7 @@ def voting_page(request, pk):
     if timezone.now() > voting.finished:
         voting.is_active = 0
         voting.save()
-    if VoteFact.objects.filter(voting=voting):
+    if VoteFact.objects.filter(voting=voting, author=curr_user):
         votefact = True
     else:
         votefact = False
@@ -145,6 +145,26 @@ def voting_editing_page(request, pk):
     else:
         return HttpResponseRedirect("/votings/")
     return render(request, 'pages/editing.html', context)
+
+def voting_results(request, pk):
+    curr_user = request.user
+    voting = get_object_or_404(Voting, id=pk)
+    votevariants = VoteVariant.objects.filter(voting=voting)
+    statistic = {}
+    if VoteFact.objects.filter(voting=voting, author=curr_user):
+        votefact = True
+    else:
+        votefact = False
+
+    for i in votevariants:
+        statistic[i.description] = VoteFact.objects.filter(voting=voting, variant=i).count() #votefacts.objects.filter(variant=i)
+
+    context = {
+        'votefact': votefact,
+        'statistic': statistic,
+        'voting': voting
+    }
+    return render(request, 'pages/voting_results.html', context)
 
 
 def profile_page(request):
