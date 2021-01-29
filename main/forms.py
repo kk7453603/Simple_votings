@@ -17,3 +17,8 @@ class ProfileEditingForm(forms.Form):
     first_name = forms.CharField(label='Редактировать имя:', max_length=150, required=False)
     last_name = forms.CharField(label='Редактировать фамилию:', max_length=150, required=False)
     email = forms.EmailField(label='Редактировать email:', required=True)
+
+
+class VotingForm(forms.Form):
+    radio_variant = forms.ChoiceField(widget=forms.RadioSelect)
+    checkbox_variant = forms.ChoiceField(widget=forms.CheckboxSelectMultiple)
