@@ -31,6 +31,7 @@ def index_page(request):
     return render(request, 'pages/index.html', context)
 
 
+@login_required
 def voting_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)  # это id голосования
     vote_variants = voting.votevariant_set.all()
@@ -66,6 +67,7 @@ def voting_page(request, pk):
         return render(request, 'pages/voting.html', context)
 
 
+@login_required
 def complaint_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)
     curr_user = request.user
@@ -101,6 +103,7 @@ def complaint_list_page(request):
     return render(request, 'pages/complaint_list.html', context)
 
 
+@login_required
 def voting_creation_page(request):
     context = {
         'menu': get_menu_context(),
@@ -127,6 +130,7 @@ def voting_creation_page(request):
     return render(request, 'pages/creating.html', context)
 
 
+@login_required
 def voting_editing_page(request, pk):
     context = {
         'menu': get_menu_context(),
@@ -157,6 +161,7 @@ def voting_editing_page(request, pk):
     return render(request, 'pages/editing.html', context)
 
 
+@login_required
 def voting_results(request, pk):
     curr_user = request.user
     voting = get_object_or_404(Voting, id=pk)
@@ -179,6 +184,7 @@ def voting_results(request, pk):
     return render(request, 'pages/voting_results.html', context)
 
 
+@login_required
 def profile_page(request):
     context = {
         'menu': get_menu_context(),
@@ -186,6 +192,7 @@ def profile_page(request):
     return render(request, 'pages/profile.html', context)
 
 
+@login_required
 def profile_editing_page(request):
     if request.method == 'POST':
         user = User.objects.get(id=request.user.pk)
@@ -200,3 +207,32 @@ def profile_editing_page(request):
             'menu': get_menu_context(),
         }
         return render(request, 'pages/profile_editing.html', context)
+
+
+@login_required
+def password_editing_page(request):
+    if request.method == 'POST':
+        context = {
+            'is_old_password_wrong': True,
+            'is_new_password_wrong': True,
+            'is_repeat_password_wrong': True,
+        }
+        user = User.objects.get(id=request.user.pk)
+        password = request.POST.get('old_password')
+        if user.check_password(password):
+            new_password = request.POST.get('new_password')
+            repeat_new_password = request.POST.get('repeat_new_password')
+            context['is_old_password_wrong'] = False
+            if new_password == repeat_new_password:
+                context['is_repeat_password_wrong'] = False
+                if len(new_password) > 7 and len(repeat_new_password) > 7:
+                    context['is_new_password_wrong'] = False
+                    user.set_password(new_password)
+                    user.save()
+                    return HttpResponseRedirect("/")
+        return render(request, 'pages/password_editing.html', context)
+    elif request.method == 'GET':
+        context = {
+            'menu': get_menu_context(),
+        }
+        return render(request, 'pages/password_editing.html', context)
