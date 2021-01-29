@@ -1,7 +1,8 @@
 {% extends 'base/base.html' %}
 
+
 {% block content %}
-  <div class="row mt-3">
+    <div class="row mt-3">
         <div class="col">
             <h1>Отправка жалобы</h1>
             <div class="mt-5">
@@ -11,19 +12,21 @@
                 <h5>Укажите,пожалуйста, суть проблемы</h5>
             </div>
             <div>
-              <form method="POST">
-                {% csrf_token %}
-                <textarea class="form-control" id="text" name="text"></textarea><br>
-                <p><button type="submit" class="btn btn-danger">Отправить</button></p>
-              </form>
+                <form method="POST">
+                    {% csrf_token %}
+                    <textarea class="form-control" id="text" name="text"></textarea><br>
+                    <p>
+                        <button type="submit" class="btn btn-danger">Отправить</button>
+                    </p>
+                </form>
             </div>
         </div>
         <div class="col">
-          {% if status is 1 %}
-            <h3>Жалоба успешно отправлена</h3>
-          {% elif status is 0 %}
-            <h3>Ошибка заполнения формы</h3>
-          {% endif %}
+            {% if status is 1 %}
+                <h3>Жалоба успешно отправлена</h3>
+            {% elif status is 0 %}
+                <h3>Ошибка заполнения формы</h3>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

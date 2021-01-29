@@ -9,7 +9,6 @@ class CustomRegistrationForm(RegistrationForm):
 
 
 class EmailValidationOnForgotPassword(PasswordResetForm):
-
     def clean_email(self):
         email = self.cleaned_data['email']
         if not get_user_model().objects.filter(email__iexact=email, is_active=True).exists():
