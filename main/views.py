@@ -6,6 +6,7 @@ from django.views.generic import DetailView
 
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
 
+import json
 
 class VotingUpdateView(DetailView):
     model = Voting
@@ -22,12 +23,15 @@ def get_menu_context():
 
 
 def index_page(request):
-    context = {
+    items = {
         'pagename': 'Главная',
         'author': 'Andrew',
         'pages': 4,
         'menu': get_menu_context()
     }
+
+    context = {"json": json.dumps(items)}
+
     return render(request, 'pages/index.html', context)
 
 
