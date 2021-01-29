@@ -212,7 +212,15 @@ def profile_editing_page(request):
         else:
             return HttpResponseRedirect("/profile/editing/")
     elif request.method == 'GET':
-        form = ProfileEditingForm(request.POST)
+        user = User.objects.get(id=request.user.pk)
+        form = ProfileEditingForm(
+            initial={
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }
+        )
         context = {
             'form': form,
             'menu': get_menu_context(),
