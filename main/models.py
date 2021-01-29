@@ -55,4 +55,4 @@ class VoteImages(models.Model):
 class Comments(models.Model):
     voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
-    description = models.TextField()
+    content = models.TextField(max_length=200)
