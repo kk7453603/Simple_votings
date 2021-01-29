@@ -99,6 +99,32 @@ def voting_list_page(request):
 
 
 @login_required
+def voting_history_page(request):
+    vote_vars = []
+    voting_names = []
+    voting_des = []
+    voting_id = []
+    context = {
+        'history': VoteFact.objects.filter(author_id=request.user.id)
+    }
+    for obj in context['history']:
+        vote_vars.append(VoteVariant.objects.get(id=obj.variant_id).description)
+        voting_names.append(Voting.objects.get(id=obj.voting_id).name)
+        voting_des.append(Voting.objects.get(id=obj.voting_id).description)
+        voting_id.append(Voting.objects.get(id=obj.voting_id).id)
+    vote_info = []
+    for obj in range(len(voting_names)):
+        vote_info.append([voting_names[obj], voting_des[obj], vote_vars[obj], voting_id[obj]] )
+
+    context = {
+        'vote_info': vote_info,
+        'menu': get_menu_context()
+    }
+
+    return render(request, 'pages/voting_history.html', context)
+
+
+@login_required
 def complaint_list_page(request):
     context = {
         'history': Complaint.objects.filter(author_id=request.user.id),
