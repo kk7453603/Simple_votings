@@ -9,25 +9,26 @@
 
     <p>{{ voting.description }}</p>
     <hr>
-    {% if voting.is_active and not votefact %}
+    {%if voting.is_active and not votefact%}
         {% for i in images %}
-            <img src="{{ i.image_url }}" alt="" width="250px">
+            <img src="{{i.image_url}}" alt="" width="250px">
         {% endfor %}
         <form method="post">
+            <input type="hidden" name="parameter" value="voting" />
             {% csrf_token %}
             {% if voting.type == 0 %}
                 {% for vote_var in vote_variants %}
-                    <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{ vote_var.description }}</p>
+                    <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
                 {% endfor %}
                 <p><input type="submit" value="Выбрать" class="btn btn-dark"></p>
             {% elif voting.type == 1 %}
                 {% for vote_var in vote_variants %}
-                    <p><input name="vote_var" type="checkbox" value={{vote_var.id}}> {{ vote_var.description }}</p>
+                    <p><input name="vote_var" type="checkbox" value={{vote_var.id}}> {{vote_var.description}}</p>
                 {% endfor %}
                 <p><input type="submit" value="Выбрать" class="btn btn-dark btn-sm"></p>
             {% elif voting.type == 2 %}
                 {% for vote_var in vote_variants %}
-                    <span><button name="vote_var" type="submit" value={{vote_var.id}}>{{ vote_var.description }}</button></span>
+                    <span><button name="vote_var" type="submit" value={{vote_var.id}}>{{vote_var.description}}</button></span>
                 {% endfor %}
             {% endif %}
         </form>
@@ -44,4 +45,45 @@
     {% endif %}
     <br>
     <a href="{% url 'voting_complaint' voting.id %}" type="submit" class="btn btn-danger btn-sm">Пожаловаться</a>
+
+<div class="comments_div">
+    <!--Comments-->
+    <div class="card card-comments mb-3 wow fadeIn">
+        <div class="card-header font-weight-bold">Комментарии</div>
+        <div class="card-body">
+            {% if comments %}
+                {% for com in comments %}
+                    <div class="media d-block d-md-flex mt-4">
+                        <img class="d-flex mb-3 mx-auto " src="https://bizraise.pro/wp-content/uploads/2014/09/no-avatar-300x300.png" width="50px" alt="image">
+                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                <h6 class="mt-0 font-weight-bold">{{ com.author.username }}</h6>
+                                <div class="well">{{ com.content }}</div>
+                            </div>
+                        </div>
+                {% endfor %}
+            {% else %}
+                <b> Нет комментариев </b>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-3 wow fadeIn">
+        <div class="card-header font-weight-bold">Напишите комментарий</div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <!-- Comment -->
+                <input type="hidden" name="parameter" value="comment" />
+                <div class="form-group">
+                    <label for="FormComment">Ваш комментарий</label>
+                    <textarea class="form-control" id="FormComment" rows="5" name="comment"></textarea>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-info btn-md" type="submit">Оставить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

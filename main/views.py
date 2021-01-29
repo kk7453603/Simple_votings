@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
+from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages, Comments
 
 import json
 
@@ -41,6 +41,7 @@ def voting_page(request, pk):
     vote_variants = voting.votevariant_set.all()
     curr_user = request.user
     images = VoteImages.objects.filter(voting=voting)
+    comments = Comments.objects.filter(voting=voting)
     if timezone.now() > voting.finished:
         voting.is_active = 0
         voting.save()
@@ -49,16 +50,23 @@ def voting_page(request, pk):
     else:
         votefact = False
     if request.method == "POST":
-        if not votefact:
-            if voting.is_active:
-                vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
-                if vote_var is not None:  # массив ответов записывается в БД
-                    for var in vote_var:
-                        variant = get_object_or_404(VoteVariant, id=var)
-                        time = timezone.now()
-                        vote_fact = VoteFact(voting=voting, author=curr_user, variant=variant, created=time)
-                        vote_fact.save()
-        return HttpResponseRedirect('/votings')
+        parameter = request.POST.get('parameter', None)
+        if parameter == 'voting':
+            if not votefact:
+                if voting.is_active:
+                    vote_var = request.POST.getlist('vote_var', None)  # берётся массив ответов
+                    if vote_var is not None:  # массив ответов записывается в БД
+                        for var in vote_var:
+                            variant = get_object_or_404(VoteVariant, id=var)
+                            time = timezone.now()
+                            vote_fact = VoteFact(voting=voting, author=curr_user, variant=variant, created=time)
+                            vote_fact.save()
+        elif parameter == 'comment':
+            comment = request.POST.get('comment', None)
+            if comment:
+                data = Comments(author=request.user, voting_id=pk, content=comment)
+                data.save()
+        return HttpResponseRedirect(f'/voting/{pk}')
     elif request.method == "GET":
         context = {
             'vote_variants': vote_variants,
@@ -67,6 +75,7 @@ def voting_page(request, pk):
             'votefact': votefact,
             'images': images,
             'menu': get_menu_context(),
+            'comments': comments
         }
         return render(request, 'pages/voting.html', context)
 
