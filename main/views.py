@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
+from main.forms import ProfileEditingForm
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
 
 import json
@@ -58,7 +59,7 @@ def voting_page(request, pk):
                         time = timezone.now()
                         vote_fact = VoteFact(voting=voting, author=curr_user, variant=variant, created=time)
                         vote_fact.save()
-        return HttpResponseRedirect('/votings')
+        return HttpResponseRedirect('/votings/')
     elif request.method == "GET":
         context = {
             'vote_variants': vote_variants,
@@ -130,7 +131,7 @@ def voting_creation_page(request):
         for i in images:
             image = VoteImages(voting_id=voting_id, image_url=i)
             image.save()
-        return HttpResponseRedirect("/votings")
+        return HttpResponseRedirect("/votings/")
     return render(request, 'pages/creating.html', context)
 
 
@@ -177,7 +178,7 @@ def voting_results(request, pk):
         votefact = False
 
     for i in votevariants:
-        statistic[i.description] = VoteFact.objects.filter(voting=voting, variant=i).count() #votefacts.objects.filter(variant=i)
+        statistic[i.description] = VoteFact.objects.filter(voting=voting, variant=i).count()  # votefacts.objects.filter(variant=i)
 
     context = {
         'votefact': votefact,
@@ -199,15 +200,21 @@ def profile_page(request):
 @login_required
 def profile_editing_page(request):
     if request.method == 'POST':
-        user = User.objects.get(id=request.user.pk)
-        user.username = request.POST.get('username')
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        user.save()
-        return HttpResponseRedirect("/profile")
+        form = ProfileEditingForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=request.user.pk)
+            user.username = form.data['username']
+            user.first_name = form.data['first_name']
+            user.last_name = form.data['last_name']
+            user.email = form.data['email']
+            user.save()
+            return HttpResponseRedirect("/profile/")
+        else:
+            return HttpResponseRedirect("/profile/editing/")
     elif request.method == 'GET':
+        form = ProfileEditingForm(request.POST)
         context = {
+            'form': form,
             'menu': get_menu_context(),
         }
         return render(request, 'pages/profile_editing.html', context)
