@@ -100,8 +100,17 @@ def complaint_page(request, pk):
 
 @login_required
 def voting_list_page(request):
+    votefact = False
+    votings = []
+    votings_info=[]
+    for i in VoteFact.objects.filter(author=request.user):
+        votings.append(Voting.objects.get(id=i.voting_id))
+    for i in Voting.objects.all():
+        if not i in votings:
+            votings_info.append(i)
     context = {
-        'history': Voting.objects.all(),
+        'votefact': votefact,
+        'history': votings_info,
         'menu': get_menu_context(),
     }
     return render(request, 'pages/voting_list.html', context)
