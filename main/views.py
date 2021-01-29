@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
+from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages, Comments
 
 
 class VotingUpdateView(DetailView):
