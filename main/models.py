@@ -48,6 +48,7 @@ class FavouriteVoting(models.Model):
     author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
 
+
 class VoteImages(models.Model):
     voting = models.ForeignKey(to=Voting, on_delete=models.CASCADE)
     image_url = models.URLField()
