@@ -52,5 +52,6 @@ urlpatterns = [
     path('creating/', views.voting_creation_page, name='voting_create'),
     path('complaint_list/', views.complaint_list_page, name='complaint_list'),
     path('profile/', views.profile_page, name='profile'),
+    path('profile/history/', views.voting_history_page, name='voting_history'),
     path('profile/editing/', views.profile_editing_page, name='profile_editing'),
 ]
