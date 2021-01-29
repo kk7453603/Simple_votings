@@ -4,10 +4,11 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.forms import ProfileEditingForm
+from main.forms import ProfileEditingForm, VotingForm, PasswordEditingForm
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
 
 import json
+
 
 class VotingUpdateView(DetailView):
     model = Voting
@@ -61,6 +62,11 @@ def voting_page(request, pk):
                         vote_fact.save()
         return HttpResponseRedirect('/votings/')
     elif request.method == "GET":
+        # variants = []
+        # for i in range(len(vote_variants)):
+        #     variants.append((i + 1, vote_variants[i].description))
+        # VARIANTS = tuple(variants)
+        # form = VotingForm(choices=VARIANTS)
         context = {
             'vote_variants': vote_variants,
             'curr_user': curr_user,
@@ -231,27 +237,34 @@ def profile_editing_page(request):
 @login_required
 def password_editing_page(request):
     if request.method == 'POST':
-        context = {
-            'is_old_password_wrong': True,
-            'is_new_password_wrong': True,
-            'is_repeat_password_wrong': True,
-        }
-        user = User.objects.get(id=request.user.pk)
-        password = request.POST.get('old_password')
-        if user.check_password(password):
-            new_password = request.POST.get('new_password')
-            repeat_new_password = request.POST.get('repeat_new_password')
-            context['is_old_password_wrong'] = False
-            if new_password == repeat_new_password:
-                context['is_repeat_password_wrong'] = False
-                if len(new_password) > 7 and len(repeat_new_password) > 7:
-                    context['is_new_password_wrong'] = False
-                    user.set_password(new_password)
-                    user.save()
-                    return HttpResponseRedirect("/")
-        return render(request, 'pages/password_editing.html', context)
+        form = PasswordEditingForm(request.POST)
+        if form.is_valid():
+            context = {
+                'form': form,
+                'is_old_password_wrong': True,
+                'is_new_password_wrong': True,
+                'is_repeat_password_wrong': True,
+            }
+            user = User.objects.get(id=request.user.pk)
+            password = form.data['old_password']
+            if user.check_password(password):
+                new_password = form.data['new_password']
+                repeat_new_password = form.data['repeat_new_password']
+                context['is_old_password_wrong'] = False
+                if new_password == repeat_new_password:
+                    context['is_repeat_password_wrong'] = False
+                    if len(new_password) > 7 and len(repeat_new_password) > 7:
+                        context['is_new_password_wrong'] = False
+                        user.set_password(new_password)
+                        user.save()
+                        return HttpResponseRedirect("/")
+            return render(request, 'pages/password_editing.html', context)
+        else:
+            return HttpResponseRedirect("/profile/editing/change_password/")
     elif request.method == 'GET':
+        form = PasswordEditingForm()
         context = {
+            'form': form,
             'menu': get_menu_context(),
         }
         return render(request, 'pages/password_editing.html', context)

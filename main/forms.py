@@ -22,3 +22,21 @@ class ProfileEditingForm(forms.Form):
 class VotingForm(forms.Form):
     radio_variant = forms.ChoiceField(widget=forms.RadioSelect)
     checkbox_variant = forms.ChoiceField(widget=forms.CheckboxSelectMultiple)
+
+
+class PasswordEditingForm(forms.Form):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Старый пароль', 'class': 'form-control'}
+        )
+    )
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Новый пароль', 'class': 'form-control'}
+        )
+    )
+    repeat_new_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Повторите новый пароль', 'class': 'form-control'}
+        )
+    )
