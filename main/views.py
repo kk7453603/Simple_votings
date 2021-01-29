@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.generic import DetailView
 
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
-from datetime import datetime
+
 
 class VotingUpdateView(DetailView):
     model = Voting
@@ -145,6 +145,7 @@ def voting_editing_page(request, pk):
     else:
         return HttpResponseRedirect("/votings/")
     return render(request, 'pages/editing.html', context)
+
 
 def voting_results(request, pk):
     curr_user = request.user
