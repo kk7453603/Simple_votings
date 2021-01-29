@@ -41,6 +41,10 @@
         {% else %}
             <b>Голосование завершено</b> <br>
         {% endif %}
+        {% if curr_user.id == voting.author_id %}
+            <a href="{% url 'voting_editing' voting.id %}" class="btn btn-primary btn-sm">Изменить</a>
+        {% endif %}
+        <br>
         <a href="{% url 'voting_results' voting.id %}" type="submit" class="btn btn-info">Посмотреть результаты</a>
     {% endif %}
     <br>
