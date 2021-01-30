@@ -22,17 +22,18 @@
    pip install -r requirements.txt
    ```
 
-7. Синхронизировать структуру базы данных с моделями: 
+7. Скачать файл db.sqlite3 из Wiki проекта, вставить файл в папку проекта.
+8. Синхронизировать структуру базы данных с моделями: 
    ```bash
    python manage.py migrate
    ```
 
-8. Создать суперпользователя
+9. Создать суперпользователя
    ```bash
    python manage.py shell -c "from django.contrib.auth import get_user_model; get_user_model().objects.create_superuser('vasya', '1@abc.net', 'promprog')"
    ```
 
-9. Создать конфигурацию запуска в PyCharm (файл `manage.py`, опция `runserver`)
+10. Создать конфигурацию запуска в PyCharm (файл `manage.py`, опция `runserver`)
 
 Внимание! Создана отдельная модель пользователя в модуле `main`! 
 При создании ForeignKey'ев на User'а - использовать её!
