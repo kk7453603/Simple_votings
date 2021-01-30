@@ -5,8 +5,10 @@ from django.utils import timezone
 from django.views.generic import DetailView
 
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages, Comments
+from main.forms import ProfileEditingForm, VotingForm, PasswordEditingForm, ComplaintForm
 
 import json
+
 
 class VotingUpdateView(DetailView):
     model = Voting
@@ -83,19 +85,23 @@ def voting_page(request, pk):
 @login_required
 def complaint_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)
-    curr_user = request.user
-    reason = request.POST.get('text', None)
     context = {
         'voting_text': voting.description,
         'menu': get_menu_context(),
     }
-    user = request.user
     if request.method == 'POST':
-        context['status'] = 1
-        adder = Complaint(author_id=user.id, description=reason, status=0, voting_id=pk)
-        adder.save()
-
-    return render(request, 'pages/voting_complaint.html', context)
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            reason = form.data['text']
+            adder = Complaint(author_id=request.user.id, description=reason, status=0, voting_id=pk)
+            adder.save()
+            return HttpResponseRedirect('/complaint_list/')
+        else:
+            return HttpResponseRedirect(f'/voting/{pk}/complaint/')
+    elif request.method == 'GET':
+        form = ComplaintForm()
+        context['form'] = form
+        return render(request, 'pages/voting_complaint.html', context)
 
 
 @login_required
@@ -174,7 +180,7 @@ def voting_creation_page(request):
         for i in images:
             image = VoteImages(voting_id=voting_id, image_url=i)
             image.save()
-        return HttpResponseRedirect("/votings")
+        return HttpResponseRedirect("/votings/")
     return render(request, 'pages/creating.html', context)
 
 
@@ -221,7 +227,7 @@ def voting_results(request, pk):
         votefact = False
 
     for i in votevariants:
-        statistic[i.description] = VoteFact.objects.filter(voting=voting, variant=i).count() #votefacts.objects.filter(variant=i)
+        statistic[i.description] = VoteFact.objects.filter(voting=voting, variant=i).count()  # votefacts.objects.filter(variant=i)
 
     context = {
         'votefact': votefact,
@@ -243,15 +249,29 @@ def profile_page(request):
 @login_required
 def profile_editing_page(request):
     if request.method == 'POST':
-        user = User.objects.get(id=request.user.pk)
-        user.username = request.POST.get('username')
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        user.save()
-        return HttpResponseRedirect("/profile")
+        form = ProfileEditingForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=request.user.pk)
+            user.username = form.data['username']
+            user.first_name = form.data['first_name']
+            user.last_name = form.data['last_name']
+            user.email = form.data['email']
+            user.save()
+            return HttpResponseRedirect("/profile/")
+        else:
+            return HttpResponseRedirect("/profile/editing/")
     elif request.method == 'GET':
+        user = User.objects.get(id=request.user.pk)
+        form = ProfileEditingForm(
+            initial={
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            }
+        )
         context = {
+            'form': form,
             'menu': get_menu_context(),
         }
         return render(request, 'pages/profile_editing.html', context)
@@ -260,27 +280,34 @@ def profile_editing_page(request):
 @login_required
 def password_editing_page(request):
     if request.method == 'POST':
-        context = {
-            'is_old_password_wrong': True,
-            'is_new_password_wrong': True,
-            'is_repeat_password_wrong': True,
-        }
-        user = User.objects.get(id=request.user.pk)
-        password = request.POST.get('old_password')
-        if user.check_password(password):
-            new_password = request.POST.get('new_password')
-            repeat_new_password = request.POST.get('repeat_new_password')
-            context['is_old_password_wrong'] = False
-            if new_password == repeat_new_password:
-                context['is_repeat_password_wrong'] = False
-                if len(new_password) > 7 and len(repeat_new_password) > 7:
-                    context['is_new_password_wrong'] = False
-                    user.set_password(new_password)
-                    user.save()
-                    return HttpResponseRedirect("/")
-        return render(request, 'pages/password_editing.html', context)
+        form = PasswordEditingForm(request.POST)
+        if form.is_valid():
+            context = {
+                'form': form,
+                'is_old_password_wrong': True,
+                'is_new_password_wrong': True,
+                'is_repeat_password_wrong': True,
+            }
+            user = User.objects.get(id=request.user.pk)
+            password = form.data['old_password']
+            if user.check_password(password):
+                new_password = form.data['new_password']
+                repeat_new_password = form.data['repeat_new_password']
+                context['is_old_password_wrong'] = False
+                if new_password == repeat_new_password:
+                    context['is_repeat_password_wrong'] = False
+                    if len(new_password) > 7 and len(repeat_new_password) > 7:
+                        context['is_new_password_wrong'] = False
+                        user.set_password(new_password)
+                        user.save()
+                        return HttpResponseRedirect("/")
+            return render(request, 'pages/password_editing.html', context)
+        else:
+            return HttpResponseRedirect("/profile/editing/change_password/")
     elif request.method == 'GET':
+        form = PasswordEditingForm()
         context = {
+            'form': form,
             'menu': get_menu_context(),
         }
         return render(request, 'pages/password_editing.html', context)

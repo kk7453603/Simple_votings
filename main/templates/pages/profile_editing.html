@@ -6,10 +6,10 @@
             <h1>Редактирование профиля</h1>
             <form method="POST">
                 {% csrf_token %}
-                <h4 class="mt-3">Редактировать имя пользователя: <input name="username" type="text" value="{{ user.username }}"></h4>
-                <h4 class="mt-3">Редактировать имя: <input name="first_name" type="text" value="{{ user.first_name }}"></h4>
-                <h4 class="mt-3">Редактировать фамилию: <input name="last_name" type="text" value="{{ user.last_name }}"></h4>
-                <h4 class="mt-3">Редактировать email: <input name="email" type="text" value="{{ user.email }}"></h4>
+                <h4 class="mt-3">{{ form.username.label }} {{ form.username }}</h4>
+                <h4 class="mt-3">{{ form.first_name.label }} {{ form.first_name }}</h4>
+                <h4 class="mt-3">{{ form.last_name.label }} {{ form.last_name }}</h4>
+                <h4 class="mt-3">{{ form.email.label }} {{ form.email }}</h4>
                 <input type="submit" value="Подтвердить изменения" class="btn btn-primary mt-3">
             </form>
         </div>

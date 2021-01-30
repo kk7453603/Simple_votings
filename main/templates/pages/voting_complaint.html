@@ -14,19 +14,11 @@
             <div>
                 <form method="POST">
                     {% csrf_token %}
-                    <textarea class="form-control" id="text" name="text"></textarea><br>
-                    <p>
-                        <button type="submit" class="btn btn-danger">Отправить</button>
-                    </p>
+                    {{ form.text }}
+                    <br>
+                    <button type="submit" class="btn btn-danger">Отправить</button>
                 </form>
             </div>
-        </div>
-        <div class="col">
-            {% if status is 1 %}
-                <h3>Жалоба успешно отправлена</h3>
-            {% elif status is 0 %}
-                <h3>Ошибка заполнения формы</h3>
-            {% endif %}
         </div>
     </div>
 {% endblock %}
