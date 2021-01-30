@@ -1,7 +1,8 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <div class="row mt-3">
+
+    <div class="container row mt-3">
         <div class="col">
             <h1>{{ user.username }}</h1>
             <div class="mt-5">
@@ -12,7 +13,76 @@
             </div>
         </div>
         <div class="col">
-            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+            <h1></h1>
         </div>
+        <div class="container" style="margin-top: 10%">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-2" style="margin-top: 2%">
+          <div style="height: 150px; width: 150px;">
+            <img src="" style="height: 150px; width: 150px;">
+          </div>
+        </div>
+        <div class="col col-lg-1">
+        </div>
+        <div class="col col-lg-2">
+          <div id="point"> </div>
+          <p style="font-size: 70px" id="name">{{ user.first_name }} {{ user.last_name }}</p>
+          <button style="font-size: 19px; font-family: 'Caveat', cursive; margin-left: 35%" id="edit_button">Редактировать </button>
+        </div>
+      </div>
     </div>
+
+    <div class="container" style="margin-top: 3%">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-1">
+        </div>
+        <div class="col col-lg-3">
+          <div style="margin-top: 20%">
+            <p> Создано n голосований </p>
+            <p> Прошел n голосований </p>
+          </div>
+          <div style="margin: 20% 10%">
+            <p style="color: red"> Статус жалоб </p>
+          </div>
+          <div>
+            <button style="font-size: 19px; margin-left: 20%; font-family: 'Caveat', cursive;" id="save_button"> Сохранить </button>
+          </div>
+        </div>
+        <div class="col col-lg-1">
+        </div>
+      </div>
+    </div>
+
+    <script>
+      'use strict'
+
+      save_button.style.visibility="hidden";
+      edit_button.addEventListener('click', function() {
+        let elem = document.createElement('input');
+        elem.value = document.getElementById('name').innerHTML;
+        elem.id = "input_name";
+        elem.style.fontSize = 70 + 'px';
+        elem.style.fontFamily = 'Caveat';
+        document.querySelector('#point').appendChild(elem);
+
+        document.querySelector('#name').parentNode.removeChild(document.querySelector('#name'));
+        save_button.style.visibility="visible";
+      })
+
+      save_button.addEventListener('click', function() {
+        let elem = document.createElement('p');
+        elem.innerHTML = document.getElementById('input_name').value;
+        elem.id = "name";
+        elem.style.fontSize = 70 + 'px';
+        document.querySelector('#point').appendChild(elem);
+
+        document.querySelector('#input_name').parentNode.removeChild(document.querySelector('#input_name'));
+
+        let str = document.getElementById('name').innerHTML;
+        edit_button.style.marginLeft = str.length * 5 + '%';
+        save_button.style.visibility="hidden";
+      })
+    </script>
+    </div>
+    
 {% endblock %}

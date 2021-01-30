@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from main import views
+from main import views, tests
 from django.contrib.auth import views as auth_views
 
 from django_registration.backends.one_step.views import RegistrationView
@@ -53,4 +53,5 @@ urlpatterns = [
     path('complaint_list/', views.complaint_list_page, name='complaint_list'),
     path('profile/', views.profile_page, name='profile'),
     path('profile/editing/', views.profile_editing_page, name='profile_editing'),
+    path('test/', tests.test_page, name='testing')
 ]
