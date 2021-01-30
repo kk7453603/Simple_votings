@@ -28,15 +28,27 @@ class PasswordEditingForm(forms.Form):
     old_password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Старый пароль', 'class': 'form-control'}
-        )
+        ),
+        required=True,
     )
     new_password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Новый пароль', 'class': 'form-control'}
-        )
+        ),
+        required=True,
     )
     repeat_new_password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Повторите новый пароль', 'class': 'form-control'}
-        )
+        ),
+        required=True,
+    )
+
+
+class ComplaintForm(forms.Form):
+    text = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'class': 'form-control'}
+        ),
+        required=True,
     )

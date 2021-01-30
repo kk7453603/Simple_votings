@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from main.forms import ProfileEditingForm, VotingForm, PasswordEditingForm
+from main.forms import ProfileEditingForm, VotingForm, PasswordEditingForm, ComplaintForm
 from main.models import Voting, VoteVariant, VoteFact, Complaint, User, VoteImages
 
 import json
@@ -81,19 +81,23 @@ def voting_page(request, pk):
 @login_required
 def complaint_page(request, pk):
     voting = get_object_or_404(Voting, id=pk)
-    curr_user = request.user
-    reason = request.POST.get('text', None)
     context = {
         'voting_text': voting.description,
         'menu': get_menu_context(),
     }
-    user = request.user
     if request.method == 'POST':
-        context['status'] = 1
-        adder = Complaint(author_id=user.id, description=reason, status=0, voting_id=pk)
-        adder.save()
-
-    return render(request, 'pages/voting_complaint.html', context)
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            reason = form.data['text']
+            adder = Complaint(author_id=request.user.id, description=reason, status=0, voting_id=pk)
+            adder.save()
+            return HttpResponseRedirect('/complaint_list/')
+        else:
+            return HttpResponseRedirect(f'/voting/{pk}/complaint/')
+    elif request.method == 'GET':
+        form = ComplaintForm()
+        context['form'] = form
+        return render(request, 'pages/voting_complaint.html', context)
 
 
 @login_required
