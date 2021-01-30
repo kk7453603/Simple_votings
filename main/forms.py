@@ -23,10 +23,11 @@ class ProfileEditingForm(forms.Form):
         label='Редактировать имя пользователя:',
         max_length=150,
         required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    first_name = forms.CharField(label='Редактировать имя:', max_length=150, required=False)
-    last_name = forms.CharField(label='Редактировать фамилию:', max_length=150, required=False)
-    email = forms.EmailField(label='Редактировать email:', required=True)
+    first_name = forms.CharField(label='Редактировать имя:', max_length=150, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(label='Редактировать фамилию:', max_length=150, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Редактировать email:', required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
 
 class VotingForm(forms.Form):
