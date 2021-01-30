@@ -9,17 +9,17 @@
         <hr>
 
         <label for="voting_name"><b>Название голосования</b></label> <br>
-        <input type="text" placeholder="Название" id="voting_name" name="voting_name" value="{{voting.name}}"> <br>
+        <input class="form-control" type="text" placeholder="Название" id="voting_name" name="voting_name" value="{{voting.name}}"> <br>
 
         <label for="voting_description"><b>Описание</b></label> <br>
-        <input type="text" placeholder="Описание" id="voting_description" name="voting_description"
+        <input class="form-control" type="text" placeholder="Описание" id="voting_description" name="voting_description"
                value="{{voting.description}}"> <br>
 
         <br>
         <div id="variants">
             <b>Варианты ответа</b> <br>
             {% for record in vote_vars %}
-                <input type="text" id="vote_var" name="vote_var" value="{{record.description}}"> <br>
+                <input class="form-control" type="text" id="vote_var" name="vote_var" value="{{record.description}}"> <br>
             {% endfor %}
         </div>
 
