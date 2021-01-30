@@ -11,15 +11,15 @@
 
         {% for record in history %}
             <tr>
-              <td>{{ record.voting_id }}</td>
-              <td>{{ record.description }}</td>
-              {% if record.status == 0 %}
-              <td>{{ record.status }} (на рассмотрении)</td>
-              {% elif record.status == 1 %}
-              <td>{{ record.status }} (принята)</td>
-              {% elif record.status == 2 %}
-              <td>{{ record.status }} (отклонена)</td>
-              {% endif %}
+                <td>{{ record.voting_id }}</td>
+                <td>{{ record.description }}</td>
+                {% if record.status == 0 %}
+                    <td>{{ record.status }} (на рассмотрении)</td>
+                {% elif record.status == 1 %}
+                    <td>{{ record.status }} (принята)</td>
+                {% elif record.status == 2 %}
+                    <td>{{ record.status }} (отклонена)</td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
