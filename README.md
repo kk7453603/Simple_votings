@@ -22,7 +22,7 @@
    pip install -r requirements.txt
    ```
 
-7. Скачать файл db.sqlite3 из Wiki проекта, вставить файл в папку проекта.
+7. Скачать файл db.sqlite3 из Wiki проекта (https://gitlab.informatics.ru/2020-2021/mytischi/s105/simple_votings/-/wikis/Documentation-and-DB), вставить файл в папку проекта.
 8. Синхронизировать структуру базы данных с моделями: 
    ```bash
    python manage.py migrate
