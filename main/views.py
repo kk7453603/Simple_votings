@@ -21,16 +21,7 @@ def get_menu_context():
 
 
 def index_page(request):
-    items = {
-        'pagename': 'Главная',
-        'author': 'Andrew',
-        'pages': 4,
-        'menu': get_menu_context()
-    }
-
-    context = {"json": json.dumps(items)}
-
-    return render(request, 'pages/index.html', context)
+    return render(request, 'pages/index.html')
 
 
 def voting_page(request, pk):

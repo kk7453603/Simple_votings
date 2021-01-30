@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
         <title>{{ pagename }} - Simple votings</title>
@@ -8,18 +8,9 @@
 
 
     <body>
-
-        <header class="site-header sticky-top py-2 bg-dark">
-            {% include 'base/menu.html' %}
-        </header>
-
-        <main role="main" class="container">
+        <main role="main" class="position-absolute container-fluid d-flex align-items-center justify-content-center" style="height: 100%;">
             {% block content %} {% endblock %}
         </main>
-
-        <footer class="container py-5">
-            {% include 'base/footer.html' %}
-        </footer>
     </body>
 
 
