@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+<form method="post" id="vote_form">
+      {% csrf_token %}
+      <h1>Создание голосования</h1>
+      <hr>
+
+      <label for="voting_name"><b>Название голосования</b></label> <br>
+      <input type="text" placeholder="Название" id="voting_name" name="voting_name" required> <br> <br>
+
+      <label for="voting_description"><b>Описание</b></label> <br>
+      <input type="text" placeholder="Описание" id="voting_description" name="voting_description" required> <br> <br>
+
+      <label for="voting_types"><b>Выберите тип голосования</b></label> <br>
+      <select name="voting_type" id="voting_types" onchange="check_count()">
+        <option value="0">Выбор одного варианта</option>
+        <option value="1">Выбор нескольких вариантов</option>
+        <option value="2">Дискретное голосование</option>
+      </select>
+      <br>  <br>
+
+      <label for="finish_date"><b>Дата окончания</b></label> <br>
+      <input class="form-control" id="finish_date"  type = "datetime-local" name="finish_date" max="9999-12-31T23:59" required> <br> <br>
+
+      <label for="count_variants"><b>Варианты ответа</b></label><br>
+      <input type="number" placeholder="Количество вариантов" id="count_variants" onchange="check_count()" required> <br> <br>
+      <div id="variants">
+
+      </div>
+
+      <div id="images">
+
+      </div>
+
+      <hr>
+      <button type="submit" class="btn btn-success">Создать</button>
+</form>
+
+<script>
+  function check_count(){
+    type = document.getElementById("voting_types").value;
+    let count = document.getElementById('count_variants').value;
+    if(type == 2){
+      if (count > 2){
+        document.getElementById('count_variants').value = 2;
+      }
+    }
+    else{
+      if (count > 10){
+        document.getElementById('count_variants').value = 10;
+      }
+    }
+    add_variants();
+  }
+  function add_variants(){
+    let count = document.getElementById('count_variants').value;
+    type = document.getElementById("voting_types").value;
+    let container = document.getElementById('variants');
+    container.innerHTML =  '';
+    for (let i = 0; i < count; i++) {
+      container.innerHTML+=  ' <input name="vote_var" type="text" form="vote_form" required> <br>';
+    }
+  }
+</script>
+
+{% endblock %}

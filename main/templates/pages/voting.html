@@ -3,29 +3,37 @@
 
 {% block content %}
 
-    <p>Автор опроса - {{ voting.author.username }}</p>
+    <p>Автор опроса - {{ voting.author.username }}</p> <p>Дата окончания: <b>{{voting.finished}}</b></p>
     <hr>
     <h3>{{ voting.name }}</h3>
 
     <p>{{ voting.description }}</p>
     <hr>
-    <form method="post">
-      {% csrf_token %}
-      {% if voting.type == 0 %}
-          {% for vote_var in vote_variants %}
-              <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
-          {% endfor %}
-          <p><input type="submit" value="Выбрать"></p>
-      {% elif voting.type == 1 %}
-          {% for vote_var in vote_variants %}
-              <p><input name="vote_var" type="checkbox" value={{vote_var.id}}> {{vote_var.description}}</p>
-          {% endfor %}
-          <p><input type="submit" value="Выбрать"></p>
-      {% elif voting.type == 2 %}
-          {% for vote_var in vote_variants %}
-              <span><button name="vote_var" type="submit" value={{vote_var.id}}>{{vote_var.description}}</button></span>
-          {% endfor %}
+    {%if voting.is_active%}
+      <form method="post">
+        {% csrf_token %}
+        {% if voting.type == 0 %}
+            {% for vote_var in vote_variants %}
+                <p><input name="vote_var" type="radio" value={{vote_var.id}}> {{vote_var.description}}</p>
+            {% endfor %}
+            <p><input type="submit" value="Выбрать" class="btn btn-dark"></p>
+        {% elif voting.type == 1 %}
+            {% for vote_var in vote_variants %}
+                <p><input name="vote_var" type="checkbox" value={{vote_var.id}}> {{vote_var.description}}</p>
+            {% endfor %}
+            <p><input type="submit" value="Выбрать" class="btn btn-dark btn-sm"></p>
+        {% elif voting.type == 2 %}
+            {% for vote_var in vote_variants %}
+                <span><button name="vote_var" type="submit" value={{vote_var.id}}>{{vote_var.description}}</button></span>
+            {% endfor %}
+        {% endif %}
+      </form>
+      {% if curr_user.id == voting.author_id %}
+        <a href="{% url 'voting_editing' voting.id %}" class="btn btn-primary btn-sm">Изменить</a>
       {% endif %}
-    </form>
-
+    {%else%}
+      <b>Голосование завершено</b>
+    {% endif %}
+    <br>
+    <a href="{% url 'voting_complaint' voting.id %}" type="submit" class="btn btn-danger btn-sm">Пожаловаться</a>
 {% endblock %}
