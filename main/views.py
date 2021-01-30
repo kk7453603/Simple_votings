@@ -18,7 +18,6 @@ class VotingUpdateView(DetailView):
 
 def get_menu_context():
     return [
-        {'url_name': 'index', 'name': 'Главная'},
         {'url_name': 'votings', 'name': 'Голосования'},
         {'url_name': 'complaint_list', 'name': 'Список жалоб'},
     ]

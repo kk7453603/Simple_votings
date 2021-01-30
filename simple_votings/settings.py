@@ -129,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/votings/'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'main.User'
