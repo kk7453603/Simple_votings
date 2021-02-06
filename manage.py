@@ -4,6 +4,7 @@ import os
 import sys
 # author, name, description
 
+
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'simple_votings.settings')
     try:
