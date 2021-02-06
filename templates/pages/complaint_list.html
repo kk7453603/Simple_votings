@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+    <table class="table">
+        <tr>
+            <td>ID голосования</td>
+            <td>Описание проблемы</td>
+            <td>Статус жалобы</td>
+        </tr>
+
+        {% for record in history %}
+            <tr>
+                <td>{{ record.voting_id }}</td>
+                <td>{{ record.description }}</td>
+                {% if record.status == 0 %}
+                    <td>Жалоба на рассмотрении</td>
+                {% elif record.status == 1 %}
+                    <td>Жалоба принята</td>
+                {% elif record.status == 2 %}
+                    <td>Жалоба отклонена</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

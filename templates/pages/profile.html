@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="row mt-3">
+        <div class="col">
+            <h1>{{ user.username }}</h1>
+            <div class="mt-5">
+                <h3>Email: {{ user.email }}</h3>
+            </div>
+            <div class="mt-5">
+                <a href='editing/' class="btn btn-primary">Редактировать профиль</a>
+                <a href='editing/change_password/' class="btn btn-danger">Изменить пароль</a>
+            </div>
+            <div class="mt-3">
+                <a href='history/'><button class="btn btn-primary">История голосований</button></a>
+                {% if user.is_superuser %}
+                  <a href="/admin/" class="btn btn-success" >Админ панель</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col">
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+        </div>
+    </div>
+{% endblock %}

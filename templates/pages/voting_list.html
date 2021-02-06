@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+    <table class="table">
+        <tr>
+            <td>Имя пользователя</td>
+            <td>Название опроса</td>
+            <td>Описание опроса</td>
+            <td> <a href="{% url 'voting_create' %}" class="btn btn-primary"> Добавить </a> </td>
+        </tr>
+
+        {% for record in history %}
+            {% if not votefact %}
+                <tr>
+                <td>{{ record.author.username }}</td>
+                <td>{{ record.name }}</td>
+                <td>{{ record.description }}</td>
+                <td> <a href="{% url 'voting' record.id %}" class="btn btn-info"> Перейти </a> </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

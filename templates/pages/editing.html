@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+
+    <form method="post" id="vote_form">
+        {% csrf_token %}
+        <h1>Редактирование голосования</h1>
+        <hr>
+
+        <label for="voting_name"><b>Название голосования</b></label> <br>
+        <input type="text" placeholder="Название" id="voting_name" name="voting_name" value="{{voting.name}}"> <br>
+
+        <label for="voting_description"><b>Описание</b></label> <br>
+        <input type="text" placeholder="Описание" id="voting_description" name="voting_description"
+               value="{{voting.description}}"> <br>
+
+        <br>
+        <div id="variants">
+            <b>Варианты ответа</b> <br>
+            {% for record in vote_vars %}
+                <input type="text" id="vote_var" name="vote_var" value="{{record.description}}"> <br>
+            {% endfor %}
+        </div>
+
+        <hr>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
+
+    <script>
+        function add_variants(){
+            let count = document.getElementById('count_variants').value;
+            type = document.getElementById("voting_types").value;
+            let container = document.getElementById('variants');
+            container.innerHTML =  '';
+            for (let i = 0; i < count; i++) {
+                container.innerHTML+=  ' <input name="vote_var" type="text" form="vote_form"> <br>';
+            }
+        }
+    </script>
+
+{% endblock %}

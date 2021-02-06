@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+    <table class="table">
+        <tr>
+          <td>Название опроса</td>
+          <td>Описание опроса</td>
+          <td>Выбранный вариант</td>
+        </tr>
+        {% for obj in vote_info %}
+            <tr>
+                <td>{{obj.0}}</td>
+                <td>{{obj.1}}</td>
+                <td>{{obj.2}} </td>
+                <td> <a href="{% url 'voting' obj.3 %}" class="btn btn-info"> Перейти </a> </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

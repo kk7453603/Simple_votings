@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    {% load bootstrap4 %}
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Simple votings</title>
+
+        {% bootstrap_css %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        {% block extra_css %} {% endblock %}
+    </head>
+
+
+    <body>
+
+        <header class="site-header sticky-top py-2 bg-dark">
+            {% include 'base/menu.html' %}
+        </header>
+
+        <main role="main" class="container mt-3">
+            {% bootstrap_messages %}
+            {% block content %} {% endblock %}
+        </main>
+
+        <footer class="footer">
+            {% block footer %}
+                <div class="container text-right">
+                    <span class="text-muted">&copy; ШП, {% now "Y" %}</span>
+                </div>
+            {% endblock %}
+        </footer>
+
+        {% block extra_js %}
+            {% bootstrap_javascript jquery='full' %}
+        {% endblock %}
+    </body>
+
+
+</html>
